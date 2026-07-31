@@ -163,6 +163,72 @@
       tech: [".NET", "C#", "WebView2", "TypeScript"], link: "https://github.com/RastyFullStaxx/digiphoto-booth-system",
     },
 
+    /* ---- independent AI/ML builds: no framework, no tutorial scaffolding ---- */
+    {
+      abbr: "AGT", title: "AI Agent from Scratch — Claude API",
+      cat: "AI & ML", year: "2026", role: "Independent Build — Agent Engineering",
+      ai: "agent", metric: "Hand-written agent loop",
+      summary: "A working AI agent built directly on the Anthropic Messages API — the full tool-use loop written by hand rather than handed to a framework, so every step of the cycle is mine to reason about.",
+      highlights: [
+        "Implements the agentic loop end to end: send the conversation, inspect the stop reason, execute any requested tools, feed the results back, repeat until the model finishes its turn.",
+        "Handles tool-use correctly at the protocol level — every result carries the matching tool-use id, and parallel calls all return together in a single turn rather than being split across messages.",
+        "Tool schemas defined explicitly, with error results returned as errors so the model can recover instead of stalling.",
+        "Built from scratch specifically to understand what agent frameworks abstract away — the loop, the state, and the failure modes.",
+      ],
+      tech: ["Python", "Claude API", "Tool Use", "JSON Schema"], link: "",
+    },
+    {
+      abbr: "GPT", title: "Training an LLM with nanoGPT",
+      cat: "AI & ML", year: "2026", role: "Independent Build — Model Training",
+      ai: "model", metric: "Transformer trained from scratch",
+      summary: "Trained my own language model on the nanoGPT architecture — tokenizer through training loop through sampling, on hardware I actually have.",
+      highlights: [
+        "Worked through the full transformer stack: tokenization, embeddings, multi-head self-attention, and the causal decoder blocks that make generation work.",
+        "Ran the training loop end to end — batching, loss curves, checkpointing — and sampled from the result to see what it had learned.",
+        "Tuned the practical levers that decide whether a run converges: learning rate, batch size, context length, and model depth against available compute.",
+        "The point was understanding what a language model is at the tensor level, not producing a competitive model.",
+      ],
+      tech: ["Python", "PyTorch", "Transformers", "CUDA"], link: "",
+    },
+    {
+      abbr: "DIF", title: "Diffusion Model from Scratch",
+      cat: "AI & ML", year: "2026", role: "Independent Build — Generative Modeling",
+      ai: "model", metric: "Forward + reverse process",
+      summary: "A denoising diffusion model implemented from first principles in PyTorch — the forward noising process, the reverse denoiser, and the sampling loop that turns noise into an image.",
+      highlights: [
+        "Implemented the forward process that progressively adds Gaussian noise across a fixed schedule, and the reverse process that learns to undo it step by step.",
+        "Built the U-Net denoiser with timestep conditioning so one network handles every noise level.",
+        "Wrote the sampling loop that walks pure noise back to a coherent image, and watched the intermediate steps to verify the schedule was behaving.",
+        "Generative modelling built from the maths up rather than by calling a pretrained pipeline.",
+      ],
+      tech: ["Python", "PyTorch", "U-Net", "Diffusion"], link: "",
+    },
+    {
+      abbr: "MLP", title: "Event-Driven ML Pipelines",
+      cat: "AI & ML", year: "2026", role: "Independent Build — ML Infrastructure",
+      metric: "Kafka + feature store",
+      summary: "A streaming machine-learning pipeline built on Kafka and a feature store — the infrastructure problem of getting features to a model consistently, in real time and in training.",
+      highlights: [
+        "Event-driven architecture on Kafka, so features are computed as events arrive instead of on a batch schedule.",
+        "A feature store as the shared source of truth, which is what stops training and serving from silently drifting apart.",
+        "Designed around the failure mode that actually breaks ML in production: not the model, but the data reaching it late, twice, or in a different shape than it was trained on.",
+      ],
+      tech: ["Python", "Apache Kafka", "Feature Store", "Streaming"], link: "",
+    },
+    {
+      abbr: "RAG", title: "Agentic RAG — LangGraph & Qdrant",
+      cat: "AI & ML", year: "2026", role: "Independent Build — Retrieval Systems",
+      ai: "agent", metric: "Graph-orchestrated retrieval",
+      summary: "A retrieval-augmented generation system where the agent decides how to retrieve — built on LangGraph for orchestration and Qdrant as the vector store.",
+      highlights: [
+        "LangGraph models the workflow as an explicit graph of nodes and edges, so retrieval can loop, branch, and re-query instead of running one fixed pass.",
+        "Qdrant handles vector search over embedded documents, with filtering so retrieval can be scoped rather than purely semantic.",
+        "Agentic rather than static: the system can judge whether what it retrieved is good enough and go back for more before answering.",
+        "Built to understand where naive RAG breaks — one-shot retrieval answering the wrong question confidently.",
+      ],
+      tech: ["Python", "LangGraph", "Qdrant", "Embeddings", "RAG"], link: "",
+    },
+
     /* ---- language, games and the wider archive ---- */
     {
       abbr: "PRSM", title: "Prismatic — Programming Language",
@@ -438,6 +504,18 @@
         "Engaged in programs promoting scientific research, digital transformation and public service technology.",
         "Contributed to seminars and workshops on AI literacy, open data practices and ethical computing.",
         "Aligned project work with DOST's national development goals.",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "FF", title: "Real LIFE Future Forward Program",
+      cat: "Training", year: "2026", role: "Graduate — Direct Executive Mentorship",
+      summary: "A Real LIFE Foundation program that puts scholars in the room with senior industry leaders. I was mentored one-to-one by chief executives working in my own field.",
+      highlights: [
+        "Mentored directly by Shad Roi and Josef Werker — both chief executives, in person, not a lecture series or a recorded course.",
+        "Josef Werker leads Penbrothers, one of the Philippines' foremost talent companies, alongside Humble Technology and Longevity Labs.",
+        "The value was watching how senior operators actually reason — the thinking behind a decision, which is the part you cannot get from a book.",
+        "A continuation of the same foundation whose scholarship I hold, and the Leadership, Integrity, Faith and Excellence principle I work by.",
       ],
       photos: [],
     },
@@ -822,6 +900,13 @@
     const ctx = canvas.getContext("2d");
     const noise3D = createNoise3D();
 
+    /* The hero field runs at full intensity on every device, deliberately —
+       it is the site's signature and iOS Low Power Mode reports
+       prefers-reduced-motion, which was freezing it for people who never asked.
+       Accessibility is served by the always-visible pause control (WCAG 2.2.2),
+       which remembers the visitor's choice; the field itself is ambient and
+       low-amplitude, with no parallax, zoom or scroll coupling. Every other
+       animation on the page still honours reduced motion. */
     const COUNT = window.innerWidth < 640 ? 150 : window.innerWidth < 1024 ? 400 : 600;
     const PROPS = 9, LEN = COUNT * PROPS;
     const RANGE_Y = 130, BASE_TTL = 50, RANGE_TTL = 150;
@@ -859,7 +944,10 @@
       ], i);
     }
 
-    function step() {
+    /* `draw` is separate from the position update: advancing the simulation
+       without drawing lets a still frame warm up without chaining every
+       intermediate segment into one long streak across the canvas. */
+    function step(draw) {
       for (let i = 0; i < LEN; i += PROPS) {
         const x = props[i], y = props[i + 1];
         const n = noise3D(x * X_OFF, y * Y_OFF, tick * Z_OFF) * NOISE_STEPS * TAU;
@@ -869,15 +957,17 @@
         const x2 = x + vx * speed, y2 = y + vy * speed;
         const life = props[i + 4], ttl = props[i + 5];
 
-        ctx.save();
-        ctx.lineCap = "round";
-        ctx.lineWidth = props[i + 7];
-        ctx.strokeStyle = `hsla(${props[i + 8]}, 100%, 62%, ${fade(life, ttl)})`;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        ctx.restore();
+        if (draw) {
+          ctx.save();
+          ctx.lineCap = "round";
+          ctx.lineWidth = props[i + 7];
+          ctx.strokeStyle = `hsla(${props[i + 8]}, 100%, 62%, ${fade(life, ttl)})`;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+          ctx.restore();
+        }
 
         props[i] = x2; props[i + 1] = y2;
         props[i + 2] = vx; props[i + 3] = vy;
@@ -888,27 +978,47 @@
 
     /* the canvas stays transparent — the stage's CSS paints the navy.
        Filling it here would get amplified by the lighter+brightness glow. */
+    /* Compositing a canvas onto itself is only safe when ctx.filter forces an
+       intermediate buffer. Safari's filter support is patchy, so the GPU ends up
+       reading and writing one texture at once and the particles smear into long
+       streaks. Bouncing through an offscreen buffer makes the source and
+       destination different surfaces, which is correct on every engine. */
+    const buf = document.createElement("canvas");
+    const bctx = buf.getContext("2d");
+
+    const SUPPORTS_FILTER = (() => {
+      const probe = document.createElement("canvas").getContext("2d");
+      probe.filter = "blur(1px)";
+      return probe.filter === "blur(1px)";
+    })();
+
     function glow() {
-      ctx.save();
-      ctx.filter = "blur(8px) brightness(200%)";
-      ctx.globalCompositeOperation = "lighter";
-      ctx.drawImage(canvas, 0, 0);
-      ctx.restore();
-      ctx.save();
-      ctx.filter = "blur(4px) brightness(200%)";
-      ctx.globalCompositeOperation = "lighter";
-      ctx.drawImage(canvas, 0, 0);
-      ctx.restore();
+      if (buf.width !== canvas.width || buf.height !== canvas.height) {
+        buf.width = canvas.width;
+        buf.height = canvas.height;
+      }
+      bctx.clearRect(0, 0, buf.width, buf.height);
+      bctx.drawImage(canvas, 0, 0);
+
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
-      ctx.drawImage(canvas, 0, 0);
+      if (SUPPORTS_FILTER) {
+        ctx.filter = "blur(8px) brightness(200%)";
+        ctx.drawImage(buf, 0, 0);
+        ctx.filter = "blur(4px) brightness(200%)";
+        ctx.drawImage(buf, 0, 0);
+        ctx.filter = "none";
+      }
+      /* without a real blur, three additive copies just blow out the highlights —
+         one pass keeps the field readable */
+      ctx.drawImage(buf, 0, 0);
       ctx.restore();
     }
 
     function frame() {
       tick++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      step();
+      step(true);
       glow();
       id = raf(frame);
     }
@@ -916,9 +1026,12 @@
     function start() { if (running || paused || !inView) return; running = true; id = raf(frame); }
     function stop() { running = false; window.cancelAnimationFrame(id); }
 
+    /* one honest frame: settle the field first, then draw exactly once */
     function staticFrame() {
+      for (let f = 0; f < 90; f++) { tick++; step(false); }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let f = 0; f < 90; f++) { tick++; step(); }
+      tick++;
+      step(true);
       glow();
     }
 
@@ -931,7 +1044,19 @@
       if (RM || paused) staticFrame();
     }).observe(stage);
 
-    if (RM) { staticFrame(); toggle.hidden = true; return; }
+    /* a visitor who pauses stays paused on their next visit */
+    const PAUSE_KEY = "vortex-paused";
+    const store = {
+      get() { try { return localStorage.getItem(PAUSE_KEY) === "1"; } catch { return false; } },
+      set(v) { try { localStorage.setItem(PAUSE_KEY, v ? "1" : "0"); } catch { /* private mode */ } },
+    };
+
+    function setPaused(next) {
+      paused = next;
+      toggle.setAttribute("aria-pressed", String(paused));
+      toggle.setAttribute("aria-label", paused ? "Resume background animation" : "Pause background animation");
+      if (paused) { stop(); staticFrame(); } else start();
+    }
 
     /* battery-friendly: only animate while the hero is on screen */
     new IntersectionObserver(([e]) => {
@@ -939,14 +1064,9 @@
       if (inView) start(); else stop();
     }, { threshold: 0.05 }).observe(stage);
 
-    toggle.addEventListener("click", () => {
-      paused = !paused;
-      toggle.setAttribute("aria-pressed", String(paused));
-      toggle.setAttribute("aria-label", paused ? "Resume background animation" : "Pause background animation");
-      if (paused) { stop(); staticFrame(); } else start();
-    });
+    toggle.addEventListener("click", () => { setPaused(!paused); store.set(paused); });
 
-    start();
+    setPaused(store.get());
   }
 
   /* ============================================================
