@@ -32,21 +32,21 @@
       featured: true, ai: "model", metric: "LayoutLMv3 + GNN + T5",
       summary: "A multimodal deep-learning system that reads a PDF form the way a person does — text, layout and spatial structure at once — then labels every field and rewrites it as a plain-language prompt.",
       highlights: [
-        "Trained a three-stage architecture: LayoutLMv3 for layout-aware embeddings, a Graph Neural Network over token positions to disambiguate fields that look identical in flat text, and a T5 head that summarises each field into readable guidance.",
+        "Trained a three-stage architecture: LayoutLMv3 for layout-aware embeddings, a Graph Neural Network over token positions to disambiguate fields that look identical in flat text, and a T5 head that summarizes each field into readable guidance.",
         "Built the pipeline end to end — annotation, training and inference — against FUNSD/XFUND-style datasets, with the trained classifier weights served directly from the app.",
         "Evaluated at three levels: token-level precision, recall and F1; field-level IoU span matching; and ROUGE-L with METEOR for summary quality.",
         "Served through FastAPI behind an interactive PDF.js workspace that overlays predicted fields and confidence onto the source document.",
         "First author on the resulting undergraduate thesis at the Polytechnic University of the Philippines.",
       ],
-      tech: ["PyTorch", "LayoutLMv3", "Graph Neural Networks", "T5", "FastAPI", "HuggingFace", "PDF.js"], link: "",
+      tech: ["PyTorch", "LayoutLMv3", "Graph Neural Networks", "T5", "FastAPI", "HuggingFace", "PDF.js"], link: "https://github.com/RastyFullStaxx/IntelliForm",
     },
     {
       abbr: "BBS", title: "Balik-Bayan Scientist Program System",
       cat: "Government", year: "2025", role: "DevOps Intern — CGI",
-      metric: "DOST national programme",
+      metric: "DOST national program",
       summary: "Programme management platform for the Department of Science and Technology's Balik-Bayan Scientist Program, delivered during my DevOps internship at CGI.",
       highlights: [
-        "Built the platform on Laravel against the programme's operational workflow.",
+        "Built the platform on Laravel against the program's operational workflow.",
         "Supported CI/CD across build, test and deployment environments so releases stayed reliable.",
         "Managed branches and reviewed changes to keep a clean, traceable commit history.",
         "Set up and troubleshot Linux environments, resolving configuration and dependency issues.",
@@ -62,11 +62,11 @@
       highlights: [
         "Automated the clinic's fractionation log — cumulative dose, skin dose, isodose and days-on-treatment compute per fraction, and a record that diverges from the prescription raises a review flag automatically.",
         "Generates the clinic's own seventeen documents straight from structured forms: DOCX through docxtemplater, XLSX fraction logs through exceljs. Nobody retypes a Word template again.",
-        "Split persistence across two PostgreSQL databases — tokenised operational data and PHI — so protected health information never reaches client bundles, query strings, logs or browser storage.",
+        "Split persistence across two PostgreSQL databases — tokenized operational data and PHI — so protected health information never reaches client bundles, query strings, logs or browser storage.",
         "Readiness is derived from evidence and approvals rather than manually asserted, and a pre-authorisation state machine blocks the Planning → On Treatment transition until it clears.",
         "Built to WCAG 2.1 AA on Next.js 16 App Router, React 19 and Prisma, with write-through persistence that survives restart.",
       ],
-      tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"], link: "",
+      tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"], link: "https://github.com/RastyFullStaxx/CureRays-CRMS",
     },
     {
       abbr: "AE", title: "AgilaEye — Explainable AI-Video Detection",
@@ -74,14 +74,14 @@
       ai: "model", metric: "F1 0.82 · sub-millisecond inference",
       summary: "A lightweight, explainable detector that flags AI-generated video while you scroll a social feed — and names the visual signal that triggered the warning instead of just scoring it.",
       highlights: [
-        "Trained and tuned two classifiers on a 100-video pilot corpus: a shallow MLP and a weighted k-NN, both over seven video-level features — luminance mean and deviation, colour deltas, temporal deltas and edge energy — sampled across eight frames per video at 224×224.",
+        "Trained and tuned two classifiers on a 100-video pilot corpus: a shallow MLP and a weighted k-NN, both over seven video-level features — luminance mean and deviation, color deltas, temporal deltas and edge energy — sampled across eight frames per video at 224×224.",
         "Ran a 65,340-candidate hyperparameter sweep across k, distance power and per-feature weights, selecting on the validation split only and never touching the held-out test set.",
         "Best model reaches 0.80 accuracy, 0.90 recall and 0.82 F1 on the held-out test split at roughly 0.013 ms average inference.",
         "Implemented both classifiers from scratch in the Python standard library — no ML framework in the inference path — which is what keeps the sidecar dependency-free and the latency sub-millisecond.",
         "Explains each verdict through Grad-CAM and deterministic anomaly categories: object inconsistency, texture jitter, interaction anomaly and movement anomaly.",
         "Ships as a Tauri and Svelte desktop app, with a documented upgrade path to a MobileNetV3-Small backbone under temporal pooling.",
       ],
-      tech: ["Python", "Grad-CAM", "Tauri", "Svelte", "TypeScript", "ffmpeg"], link: "",
+      tech: ["Python", "Grad-CAM", "Tauri", "Svelte", "TypeScript", "ffmpeg"], link: "https://github.com/RastyFullStaxx/AgilaEye",
     },
     {
       abbr: "LIS", title: "FNB — Audit-Grade Inventory Platform",
@@ -95,7 +95,7 @@
         "Offline-first by design — browser and desktop both write, reconciled through an append-dominant schema with globally unique IDs and a deliberately small enumerated mutation surface, proven by a 30-check sync harness.",
         "TypeScript monorepo: React 19 and Tailwind v4 on Vite, Hono and Prisma on the server, and a pure-domain core package with no I/O.",
       ],
-      tech: ["TypeScript", "React 19", "Anthropic SDK", "Hono", "Prisma", "Tailwind v4"], link: "",
+      tech: ["TypeScript", "React 19", "Anthropic SDK", "Hono", "Prisma", "Tailwind v4"], link: "https://github.com/RastyFullStaxx/fnb-lis",
     },
     {
       abbr: "AMK", title: "Amkor IMS — Internal Management System",
@@ -117,11 +117,11 @@
       summary: "A distributed inventory system where stock is never stored, only derived. Every change is an immutable event, so any historical state can be reconstructed exactly.",
       highlights: [
         "Fully immutable event ledger — no edits, no deletions — with event replay as the single source of truth.",
-        "Offline-first operation through a device-local event queue and strict atomic batch synchronisation.",
+        "Offline-first operation through a device-local event queue and strict atomic batch synchronization.",
         "Multi-tenant isolation with a separate database per client.",
         "Built for audit-grade traceability across multiple locations, where every manual adjustment carries accountability.",
       ],
-      tech: ["TypeScript", "Node.js", "Event Sourcing", "SQLite"], link: "",
+      tech: ["TypeScript", "Node.js", "Event Sourcing", "SQLite"], link: "https://github.com/RastyFullStaxx/StockLedger",
     },
     {
       abbr: "ENC", title: "ENC BGC One — Shared Services Portal",
@@ -134,11 +134,11 @@
         "Handed over with architecture, deployment, security-hardening and operations documentation so the team could maintain it without me.",
         "Mentored the student team through version control and delivery practice.",
       ],
-      tech: ["Laravel 12", "PHP 8.2", "Blade", "Vite", "MySQL"], link: "",
+      tech: ["Laravel 12", "PHP 8.2", "Blade", "Vite", "MySQL"], link: "https://github.com/RastyFullStaxx/ENC-BGC-One",
     },
     {
       abbr: "DPB", title: "DigiPhoto — Event Booth Platform",
-      cat: "Enterprise", year: "2025", role: "Full-Stack Developer",
+      cat: "Systems & Tools", year: "2025", role: "Full-Stack Developer",
       metric: "Multi-tenant · .NET",
       summary: "A self-service event photo booth platform that turns capture, layout, payment, printing and private phone delivery into one durable workflow — one that survives interruption.",
       highlights: [
@@ -147,7 +147,212 @@
         "The Windows booth engine stays the hardware authority while the UI renders as responsive web surfaces in a WebView2 host and in owner browsers.",
         "Session recovery so an interrupted booth session resumes instead of being lost.",
       ],
-      tech: [".NET", "C#", "WebView2", "TypeScript"], link: "",
+      tech: [".NET", "C#", "WebView2", "TypeScript"], link: "https://github.com/RastyFullStaxx/digiphoto-booth-system",
+    },
+
+    /* ---- language, games and the wider archive ---- */
+    {
+      abbr: "PRSM", title: "Prismatic — Programming Language",
+      cat: "Systems & Tools", year: "2025", role: "Language Designer & Implementer",
+      metric: "Language built from scratch",
+      summary: "A programming language of my own design and implementation, built from first principles — lexer, token specification, parser and symbol table — with a syntax that borrows readability from Python and structure from C++.",
+      highlights: [
+        "Designed the full token specification and wrote the lexical analyzer that turns raw source into a token stream.",
+        "Implemented tokenization and parsing, with comprehensive symbol table generation behind it.",
+        "Free-field formatting inspired by C, plus reserved words and noise words chosen to keep programs readable aloud.",
+        "Built-in fundamental types — integer, float, boolean, char — and the control structures a real language needs: if-else, for and while.",
+        "Written in C, as an exercise in applying compiler-construction theory end to end rather than consuming someone else's runtime.",
+      ],
+      tech: ["C", "Compiler Design", "Lexical Analysis", "Parsing"], link: "https://github.com/RastyFullStaxx/CompilerDesign",
+    },
+    {
+      abbr: "PHRM", title: "PharmaSynth — Unity Simulation",
+      cat: "Games", year: "2026", role: "Unity Developer",
+      metric: "Full client production",
+      summary: "A Unity 3D pharmaceutical simulation delivered as a full client production, documented from storyboard through on-device testing and sign-off.",
+      highlights: [
+        "Built in Unity with a documented systems reference and gameplay flow rather than ad-hoc scene wiring.",
+        "Maintained an asset production specification so art and engineering could work in parallel against one contract.",
+        "Carried a formal on-device test plan and a client sign-off process to close the engagement.",
+        "Kept a manuscript reconciliation trail so the simulation stayed faithful to the source material it teaches.",
+      ],
+      tech: ["Unity", "C#", "3D Simulation"], link: "",
+    },
+    {
+      abbr: "QUE", title: "Barangay Queuing & Kiosk System",
+      cat: "Government", year: "2026", role: "Full-Stack Developer",
+      metric: "3 client apps · 1 backend",
+      summary: "An automated kiosk and application queuing system for Barangay San Miguel, Pasig City — replacing a paper queue for residents applying for local government services.",
+      highlights: [
+        "Three separate front-ends against one PHP backend: a resident portal, a thin kiosk UI for walk-ins, and a public queue monitor for the waiting area.",
+        "Each surface is scoped to its audience — residents self-serve, the kiosk stays deliberately minimal, the monitor is read-only.",
+        "Shipped with its own infrastructure and documentation directories for handover to barangay staff.",
+      ],
+      tech: ["Vue", "PHP", "MySQL"], link: "https://github.com/RastyFullStaxx/QUEUING-SYSTEM",
+    },
+    {
+      abbr: "4PH", title: "4PH Pag-IBIG Housing System",
+      cat: "Government", year: "2024", role: "Full-Stack Developer",
+      metric: "National housing program",
+      summary: "A desktop records system for the Philippine government's 4PH housing program under Pag-IBIG, covering beneficiary records and housing unit administration.",
+      highlights: [
+        "Built as a .NET desktop application for office staff working against a central database.",
+        "Modelled beneficiary and unit records around the program's actual eligibility and allocation rules.",
+        "Paired with a dedicated SQL database design for loan and housing management.",
+      ],
+      tech: ["C#", ".NET", "SQL Server"], link: "https://github.com/RastyFullStaxx/4PH_PAGIBIG_HOUSING",
+    },
+    {
+      abbr: "HLM", title: "Housing Loan Management",
+      cat: "Government", year: "2025", role: "Database Developer",
+      metric: "Relational schema design",
+      summary: "The database layer behind 4PH housing administration — schema design and query work for loan records, amortization and beneficiary tracking.",
+      highlights: [
+        "Designed the relational schema for loan accounts, payments and beneficiary linkage.",
+        "Wrote the query and reporting layer staff rely on for account status.",
+        "Built in Java against a normalized SQL back end.",
+      ],
+      tech: ["Java", "SQL", "JDBC"], link: "https://github.com/RastyFullStaxx/Housing_Loan_Management",
+    },
+    {
+      abbr: "MERC", title: "MERC Airline Ticketing System",
+      cat: "Enterprise", year: "2025", role: "Full-Stack Developer",
+      metric: "Booking to boarding",
+      summary: "A desktop airline ticketing system covering flight scheduling, seat selection, booking and ticket issuance.",
+      highlights: [
+        "Seat-level inventory so two agents cannot sell the same seat.",
+        "Booking flow that carries a passenger from flight search through to an issued ticket.",
+        "Built as a .NET desktop application for counter staff.",
+      ],
+      tech: ["C#", ".NET", "SQL Server"], link: "https://github.com/RastyFullStaxx/MERC-AIRLINE-TICKETING-SYSTEM",
+    },
+    {
+      abbr: "ADV", title: "Adventure Land Rentals",
+      cat: "Enterprise", year: "2025", role: "Full-Stack Developer",
+      metric: "Catalog + order tracking",
+      summary: "A Laravel web application managing a catalog of inflatable rentals for children's events — categorized listings, detailed product views, order tracking and role-based access.",
+      highlights: [
+        "Categorized product catalog with detail views built for browsing by parents, not by SKU.",
+        "Order tracking through the rental lifecycle, from enquiry to return.",
+        "Role-based access control separating customer, staff and administrator capability.",
+        "Front-end themed deliberately for the audience — the joy of children's events, not a generic commerce grid.",
+      ],
+      tech: ["Laravel", "PHP", "Blade", "MySQL"], link: "https://github.com/RastyFullStaxx/ADVENTURE-LAND",
+    },
+    {
+      abbr: "DBP", title: "Digital Boot Photo Shop",
+      cat: "Systems & Tools", year: "2026", role: "Full-Stack Developer",
+      metric: "Offline-first",
+      summary: "An offline-first photobooth platform covering capture ingest, guest media selection, editing, branded print generation and QR-based digital delivery.",
+      highlights: [
+        "Built for event venues where internet reliability cannot be assumed — the booth keeps working when the network does not.",
+        "Guests pick and edit their own shots, then receive them by QR without handing over a phone or an email address.",
+        "Branded print generation so the operator's templates apply consistently across a whole event.",
+      ],
+      tech: ["TypeScript", "Node.js", "Canvas API"], link: "https://github.com/RastyFullStaxx/Digital-Boot-Photo-Shop-System",
+    },
+    {
+      abbr: "TRSH", title: "Trashketball",
+      cat: "Games", year: "2025", role: "Game Developer",
+      metric: "Unity · 4 levels",
+      summary: "A Unity game that turns waste segregation into a basketball shot — throw the right rubbish into the right bin, across escalating levels.",
+      highlights: [
+        "Four progressive levels behind a shared base level manager, so difficulty scales without duplicating logic.",
+        "Physics-driven throwing with per-item handling for different waste types.",
+        "Full game shell — main menu, pause, audio management — and a packaged Windows build.",
+      ],
+      tech: ["Unity", "C#", "Game Physics"], link: "https://github.com/RastyFullStaxx/TRASHKETBALL",
+    },
+    {
+      abbr: "RICO", title: "Ricochet Rival",
+      cat: "Games", year: "2025", role: "Game & AI Developer",
+      metric: "Monte Carlo AI",
+      summary: "A shooting game whose opponent aims using a Monte Carlo algorithm — sampling possible ricochet paths rather than following a scripted rule.",
+      highlights: [
+        "Monte Carlo sampling drives opponent targeting, so its behaviour emerges from simulation instead of hand-written cases.",
+        "Ricochet geometry makes the search space non-trivial, which is what makes the sampling approach worth it.",
+        "Built as an applied exercise in probabilistic algorithms inside a real-time loop.",
+      ],
+      tech: ["C#", "Monte Carlo Methods", "Game AI"], link: "https://github.com/RastyFullStaxx/Ricochet_Rival",
+    },
+    {
+      abbr: "UNBK", title: "UnBroke — Student Finance App",
+      cat: "Systems & Tools", year: "2024", role: "Mobile Developer",
+      metric: "Financial literacy",
+      summary: "A mobile application built to combat student financial mismanagement, offering budgeting, expense tracking and goal setting.",
+      highlights: [
+        "Budgeting and expense tracking aimed at students with irregular, small-sum income.",
+        "Goal setting designed to make saving visible rather than abstract.",
+        "Built to reduce financial stress and support informed decisions, not to gamify spending.",
+      ],
+      tech: ["C#", "Mobile UI"], link: "https://github.com/RastyFullStaxx/UNBROKE_GUI",
+    },
+    {
+      abbr: "SMPL", title: "SmartPlate",
+      cat: "Systems & Tools", year: "2024", role: "Full-Stack Developer",
+      metric: "Meal planning",
+      summary: "A meal planning application for students living away from home, built around the constraints of a small budget and a small kitchen.",
+      highlights: [
+        "Meal plans generated for students who cook for one, on a fixed weekly budget.",
+        "Built in Java as a full application rather than a coursework prototype.",
+      ],
+      tech: ["Java", "SQL"], link: "https://github.com/RastyFullStaxx/SmartPlate",
+    },
+    {
+      abbr: "KFD", title: "Kofidence — R Analytics",
+      cat: "Web & Data", year: "2026", role: "Data Developer",
+      metric: "R Shiny",
+      summary: "An interactive analytics application built in R Shiny, turning a statistical workflow into something a non-statistician can operate.",
+      highlights: [
+        "Reactive Shiny interface over an R analysis pipeline.",
+        "Built so the underlying statistics stay inspectable rather than hidden behind a dashboard.",
+      ],
+      tech: ["R", "Shiny", "Statistics"], link: "https://github.com/RastyFullStaxx/kofidence-shiny",
+    },
+    {
+      abbr: "CQ", title: "CodeQuest — 30 Days of Backend",
+      cat: "Web & Data", year: "2024", role: "Backend Developer — AWS Cloud Club",
+      metric: "AWS Cloud Club PH",
+      summary: "The backend track I built and shipped for CodeQuest, the AWS Cloud Club Philippines' 30-day backend programme.",
+      highlights: [
+        "Python and Flask backend built as the reference implementation for participants.",
+        "Produced for the AWS Cloud Club community I helped found, as teaching material rather than a demo.",
+      ],
+      tech: ["Python", "Flask", "REST APIs"], link: "https://github.com/RastyFullStaxx/AWSCC-CodeQuest-Backend",
+    },
+    {
+      abbr: "LTR", title: "Personal Letter Websites",
+      cat: "Web & Data", year: "2025 — 2026", role: "Designer & Developer",
+      metric: "8 bespoke sites",
+      summary: "A running series of one-off websites built as personal letters — a way for someone to say something to a specific person, in a form more considered than a message.",
+      highlights: [
+        "Eight bespoke sites, each designed around one recipient and one occasion — birthdays, Christmas, thank-yous, farewells.",
+        "Every one is hand-built rather than templated, because the point is that it was made for that person.",
+        "Hosted individually so each can be handed over as its own link.",
+      ],
+      tech: ["HTML", "CSS", "JavaScript"], link: "https://github.com/RastyFullStaxx?tab=repositories&q=letter",
+    },
+    {
+      abbr: "PKMN", title: "Pokémon Quiz Platform",
+      cat: "Web & Data", year: "2025", role: "Full-Stack Developer",
+      metric: "Scored quiz engine",
+      summary: "An interactive quiz platform built around Pokémon identification, with scoring, progression and a responsive game-show presentation.",
+      highlights: [
+        "Question engine with scoring and progression rather than a static form.",
+        "Presentation designed to feel like a game show, not a survey.",
+      ],
+      tech: ["JavaScript", "CSS", "HTML"], link: "https://github.com/RastyFullStaxx/Pokemon-Quiz-Website",
+    },
+    {
+      abbr: "MNM", title: "Manam Restaurant Site",
+      cat: "Web & Data", year: "2025", role: "Front-End Developer",
+      metric: "Fully responsive",
+      summary: "A responsive restaurant website covering menu presentation, story and reservations, built to hold up from phone to desktop.",
+      highlights: [
+        "Menu presentation designed to be read on a phone at a table, not just on a laptop.",
+        "Fully responsive layout with no separate mobile site to maintain.",
+      ],
+      tech: ["HTML", "CSS", "JavaScript"], link: "https://github.com/RastyFullStaxx/Manam-Restaurant",
     },
   ];
 
@@ -209,6 +414,16 @@
       photos: [],
     },
     {
+      abbr: "AI", title: "Meta & Microsoft AI Programmes",
+      cat: "Training", year: "2026", role: "Selected Participant",
+      summary: "Selected for AI training programs run by Meta and Microsoft, covering applied AI practice alongside my engineering work.",
+      highlights: [
+        "Selected on merit for both programs.",
+        "Applied AI techniques that carry directly into the analytics and detection work in my projects.",
+      ],
+      photos: [],
+    },
+    {
       abbr: "FE", title: "Front-End Development Bootcamp",
       cat: "Training", year: "—", role: "Certified",
       summary: "Intensive front-end program covering layout, component architecture and interactive interfaces.",
@@ -248,8 +463,8 @@
       summary: "Competitive scholarship grants and academic selections across government and private foundations.",
       highlights: [
         "Department of Science and Technology–SEI Undergraduate Scholarship.",
-        "Real LIFE Foundation Private Scholarship.",
-        "LANI Local Government Scholarship.",
+        "Real LIFE Foundation Private Scholarship — the program behind the Leadership, Integrity, Faith and Excellence principle I still work by.",
+        "LANI Scholarship, Taguig City local government.",
         "NEON Foundation Private Scholarship.",
         "Qualified for admission in Computer Science at RTU, UMak and PLM.",
         "Regional Journalism in English — Sportswriting Qualifier.",
@@ -367,8 +582,12 @@
 
   const EDUCATION = [
     {
-      dates: "2022 — NOW", role: "BS Computer Science", org: "Polytechnic University of the Philippines, Manila", now: true,
-      points: ["Awarded Consistent President's Lister."],
+      dates: "2022 — 2026", role: "BS Computer Science — Magna Cum Laude", org: "Polytechnic University of the Philippines, Manila", now: false,
+      points: [
+        "Graduated Magna Cum Laude from one of the Philippines' premier national universities.",
+        "Awarded Consistent President's Lister across the full program.",
+        "Studied on merit scholarships from DOST-SEI, the Real LIFE Foundation, Taguig City's LANI program and the NEON Foundation.",
+      ],
     },
     {
       dates: "2020 — 2022", role: "STEM Strand", org: "Higher School of the University of Makati", now: false,
@@ -673,18 +892,29 @@
       el.dataset.text = text;
     });
 
+    /* walks text nodes rather than reading textContent, so inline markup
+       (<b>, <em>) inside a paragraph survives the word wrapping */
     $$('[data-reveal="words"]').forEach((el) => {
-      const words = el.textContent.split(/(\s+)/);
-      el.textContent = "";
       let i = 0;
-      words.forEach((w) => {
-        if (!w.trim()) { el.appendChild(document.createTextNode(w)); return; }
-        const s = document.createElement("span");
-        s.className = "word";
-        s.style.setProperty("--i", i++);
-        s.textContent = w;
-        el.appendChild(s);
-      });
+      (function wrap(node) {
+        [...node.childNodes].forEach((child) => {
+          if (child.nodeType === Node.TEXT_NODE) {
+            const frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach((part) => {
+              if (!part) return;
+              if (!part.trim()) { frag.appendChild(document.createTextNode(part)); return; }
+              const s = document.createElement("span");
+              s.className = "word";
+              s.style.setProperty("--i", i++);
+              s.textContent = part;
+              frag.appendChild(s);
+            });
+            child.replaceWith(frag);
+          } else if (child.nodeType === Node.ELEMENT_NODE) {
+            wrap(child);
+          }
+        });
+      })(el);
     });
 
     $$('[data-reveal="type"]').forEach((el) => {
@@ -866,7 +1096,7 @@
       $$(".matrix__cat", rail).forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
       renderStack(+btn.dataset.i);
     });
-    /* arrow keys move between categories — standard tablist behaviour */
+    /* arrow keys move between categories — standard tablist behavior */
     rail.addEventListener("keydown", (e) => {
       const btns = $$(".matrix__cat", rail);
       const cur = btns.indexOf(document.activeElement);
@@ -948,8 +1178,13 @@
            <div class="detail__tags">${item.tech.map((t) => `<span class="card__tag">${esc(t)}</span>`).join("")}</div>
          </section>` : "";
 
+    /* the label has to match where the link actually goes */
+    const isRepo = /github\.com/.test(item.link || "");
     const link = item.link
-      ? `<a class="btn btn--primary" href="${esc(item.link)}" target="_blank" rel="noopener">Visit the live system</a>` : "";
+      ? `<a class="btn btn--primary" href="${esc(item.link)}" target="_blank" rel="noopener">
+           ${isRepo ? "View the source" : "Visit the live system"}
+           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+         </a>` : "";
 
     const aiLine = item.ai
       ? `<span class="detail__ai">${esc(AI_LABEL[item.ai] || "AI")}</span>` : "";
@@ -1160,25 +1395,189 @@
   /* ============================================================
      COUNTERS
      ============================================================ */
+  const fmt = (n) => n.toLocaleString("en-US");
+
+  let counterIO = null;
   function initCounters() {
-    const io = new IntersectionObserver((entries) => {
+    counterIO = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
         const el = e.target;
-        io.unobserve(el);
+        counterIO.unobserve(el);
         const target = +el.dataset.count;
         const suffix = el.dataset.suffix || "";
-        if (RM) { el.textContent = target + suffix; return; }
-        const t0 = performance.now(), DUR = 950;
+        if (RM) { el.textContent = fmt(target) + suffix; return; }
+        const t0 = performance.now(), DUR = 1100;
         const step = (now) => {
           const t = Math.min((now - t0) / DUR, 1);
-          el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3))) + suffix;
+          el.textContent = fmt(Math.round(target * (1 - Math.pow(1 - t, 3)))) + suffix;
           if (t < 1) raf(step);
         };
         raf(step);
       });
     }, { threshold: 0.6 });
-    $$("[data-count]").forEach((el) => io.observe(el));
+    observeCounters(document);
+  }
+
+  /* stat tiles arrive after the GitHub fetch, so they need observing too */
+  function observeCounters(root) {
+    if (!counterIO) return;
+    $$("[data-count]", root).forEach((el) => counterIO.observe(el));
+  }
+
+  /* ============================================================
+     GITHUB ACTIVITY — live contribution graph.
+
+     Contributions come from a public, CORS-enabled, no-auth mirror
+     of the GitHub contribution calendar; the repo count comes from
+     the GitHub REST API. If either is unreachable the tiles fall
+     back to the dated snapshot below and the graph is hidden rather
+     than faked.
+     ============================================================ */
+  const GH_USER = "RastyFullStaxx";
+  const GH_SNAPSHOT = { total: 1308, active: 252, longest: 55, repos: 61, asOf: "31 Jul 2026" };
+  const GH_LEVELS = 5;
+
+  function statTile(value, label, suffix = "") {
+    return `<div class="stat reveal">
+      <span class="stat__num" data-count="${value}" data-suffix="${suffix}">0</span>
+      <span class="stat__label">${label}</span>
+    </div>`;
+  }
+
+  function renderStats(s) {
+    $("#about-stats").innerHTML =
+      statTile(s.total, "contributions · 1 yr") +
+      statTile(s.active, "active days") +
+      statTile(s.longest, "longest streak") +
+      statTile(s.repos, "public repos");
+    $$("#about-stats .reveal").forEach((el, i) => {
+      el.style.setProperty("--i", i);
+      el.classList.add("is-in");
+    });
+    observeCounters($("#about-stats"));
+  }
+
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  /* The upstream `level` field buckets this account almost entirely into
+     level 1 (227 of 252 active days), which renders as a flat wall. Levels
+     are recomputed here from quartiles of the account's own non-zero days,
+     which is what makes the intensity readable. */
+  function levelizer(days) {
+    const nz = days.filter((d) => d.count > 0).map((d) => d.count).sort((a, b) => a - b);
+    if (!nz.length) return () => 0;
+    const q = (p) => nz[Math.floor(p * (nz.length - 1))];
+    const t1 = q(0.25), t2 = q(0.5), t3 = q(0.75);
+    return (n) => (n === 0 ? 0 : n <= t1 ? 1 : n <= t2 ? 2 : n <= t3 ? 3 : 4);
+  }
+
+  function buildHeatmap(days) {
+    const CELL = 12, GAP = 3, PITCH = CELL + GAP;
+    const PAD_L = 30, PAD_T = 18;
+    const levelOf = levelizer(days);
+
+    /* pad the head so the first column starts on a Sunday, like GitHub */
+    const lead = new Date(days[0].date + "T00:00:00").getDay();
+    const cells = Array(lead).fill(null).concat(days);
+    const weeks = Math.ceil(cells.length / 7);
+    const w = PAD_L + weeks * PITCH;
+    const h = PAD_T + 7 * PITCH;
+
+    let rects = "";
+    let months = "";
+    let lastMonth = -1;
+
+    cells.forEach((d, i) => {
+      const col = (i / 7) | 0, row = i % 7;
+      const x = PAD_L + col * PITCH, y = PAD_T + row * PITCH;
+      if (!d) return;
+
+      const date = new Date(d.date + "T00:00:00");
+      if (date.getMonth() !== lastMonth && date.getDate() <= 7) {
+        lastMonth = date.getMonth();
+        months += `<text class="gh__mon" x="${x}" y="10">${MONTHS[lastMonth]}</text>`;
+      }
+      const label = `${d.count} contribution${d.count === 1 ? "" : "s"} on ${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+      rects += `<rect class="gh__cell" x="${x}" y="${y}" width="${CELL}" height="${CELL}" rx="2.5"
+        data-lv="${levelOf(d.count)}" style="--c:${col}" data-tip="${esc(label)}"><title>${esc(label)}</title></rect>`;
+    });
+
+    const dayLabels = [1, 3, 5].map((r) =>
+      `<text class="gh__day" x="0" y="${PAD_T + r * PITCH + CELL - 2}">${DAYS[r]}</text>`).join("");
+
+    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img"
+      aria-label="GitHub contribution graph for the last year">${months}${dayLabels}${rects}</svg>`;
+  }
+
+  function computeStats(days) {
+    let total = 0, active = 0, longest = 0, run = 0;
+    days.forEach((d) => {
+      total += d.count;
+      if (d.count > 0) { active++; run++; longest = Math.max(longest, run); } else run = 0;
+    });
+    return { total, active, longest };
+  }
+
+  async function loadGitHub() {
+    const graph = $("#gh-graph");
+    const note = $("#gh-note");
+    const win = $("#gh-window");
+
+    try {
+      const [cRes, uRes] = await Promise.all([
+        fetch(`https://github-contributions-api.jogruber.de/v4/${GH_USER}?y=last`),
+        fetch(`https://api.github.com/users/${GH_USER}`),
+      ]);
+      if (!cRes.ok) throw new Error("contributions unavailable");
+
+      const data = await cRes.json();
+      const today = new Date().toISOString().slice(0, 10);
+      const days = data.contributions.filter((d) => d.date <= today).slice(-371);
+      if (!days.length) throw new Error("no contribution data");
+
+      const s = computeStats(days);
+      s.repos = uRes.ok ? (await uRes.json()).public_repos : GH_SNAPSHOT.repos;
+      renderStats(s);
+
+      graph.innerHTML = buildHeatmap(days);
+      const from = new Date(days[0].date + "T00:00:00");
+      const to = new Date(days[days.length - 1].date + "T00:00:00");
+      const span = (d) => `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+      win.textContent = `${span(from)} — ${span(to)}`;
+      note.textContent = `${fmt(s.total)} contributions across ${fmt(days.length)} days`;
+      if (!RM) graph.classList.add("is-drawn");
+      initHeatmapTip();
+    } catch {
+      /* honest degradation: dated snapshot, and no invented graph */
+      renderStats(GH_SNAPSHOT);
+      win.textContent = `snapshot · ${GH_SNAPSHOT.asOf}`;
+      note.innerHTML = `Live graph unavailable right now — figures above are a snapshot from ${esc(GH_SNAPSHOT.asOf)}.`;
+      $(".gh__scroll").hidden = true;
+      $(".gh__legend").hidden = true;
+    }
+  }
+
+  function initHeatmapTip() {
+    const tip = $("#gh-tip");
+    const graph = $("#gh-graph");
+    if (!FINE) return;
+
+    graph.addEventListener("pointerover", (e) => {
+      const cell = e.target.closest(".gh__cell");
+      if (!cell) return;
+      tip.textContent = cell.dataset.tip;
+      tip.hidden = false;                       /* unhide before measuring */
+      const r = cell.getBoundingClientRect();
+      const host = graph.closest(".gh").getBoundingClientRect();
+      /* keep the bubble inside the panel — cells near either edge would clip */
+      const half = tip.offsetWidth / 2;
+      const x = r.left - host.left + r.width / 2;
+      tip.style.left = `${Math.max(half + 8, Math.min(x, host.width - half - 8))}px`;
+      tip.style.top = `${r.top - host.top - 10}px`;
+    });
+    graph.addEventListener("pointerleave", () => { tip.hidden = true; });
   }
 
   /* ============================================================
@@ -1424,5 +1823,6 @@
   boot().then(() => {
     initReveals();
     initCounters();
+    loadGitHub();
   });
 })();

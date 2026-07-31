@@ -550,47 +550,30 @@ kbd {
 /* ============================================================
    ABOUT
    ============================================================ */
-.about { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 60px; align-items: start; }
+/* portrait is capped so the two columns end at roughly the same depth —
+   a 0.85fr portrait ran ~200px longer than the prose beside it */
+/* the portrait stretches to whatever depth the prose runs to, so the two
+   columns always finish level no matter how the bio is edited */
+.about { display: grid; grid-template-columns: minmax(0, 360px) 1fr; gap: 52px; align-items: stretch; }
 
-.portrait { display: grid; gap: 16px; }
+.portrait { display: grid; grid-template-rows: 1fr auto; gap: 16px; }
 .portrait__frame {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--line-2);
   background: var(--navy);
-  aspect-ratio: 4 / 5;
+  min-height: 420px;
   isolation: isolate;
 }
+/* photo ships true to color — no tint, no duotone, no color cast */
 .portrait__frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 16%;
-  filter: contrast(1.06) brightness(0.97) saturate(0.9);
-  transform: scale(1.03);
-  transition: filter 0.6s var(--ease-out), transform 0.6s var(--ease-out);
-}
-/* duotone: `color` blend takes hue from this layer and luminance from
-   the photo, so facial detail survives the navy grade */
-.portrait__tint {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(158deg, #4a93ff, #10407f 48%, #05193a);
-  mix-blend-mode: color;
-  opacity: 0.55;
-  transition: opacity 0.6s var(--ease-out);
-}
-/* a cool rim light so the silhouette separates from the frame */
-.portrait__frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 6%, rgba(127, 219, 255, 0.13), transparent 55%);
-  mix-blend-mode: screen;
+  transform: scale(1.02);
+  transition: transform 0.6s var(--ease-out);
 }
 /* corner brackets */
 .portrait__frame::after {
@@ -606,8 +589,7 @@ kbd {
     100% 0, calc(100% - 26px) 0, calc(100% - 26px) 1px, calc(100% - 1px) 1px, calc(100% - 1px) 26px, 100% 26px
   );
 }
-.portrait:hover .portrait__frame img { filter: none; transform: scale(1); }
-.portrait:hover .portrait__tint { opacity: 0; }
+.portrait:hover .portrait__frame img { transform: scale(1); }
 
 /* soft band, feathered at both ends so it never shows a hard edge */
 .portrait__scan {
@@ -617,7 +599,7 @@ kbd {
   z-index: 3;
   height: 180px;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent, rgba(127, 219, 255, 0.16) 50%, transparent);
+  background: linear-gradient(180deg, transparent, rgba(234, 242, 255, 0.09) 50%, transparent);
   animation: scan 6s var(--ease-io) infinite;
 }
 @keyframes scan {
@@ -646,34 +628,142 @@ kbd {
   color: var(--muted);
 }
 .portrait__plate b { color: var(--ice); font-weight: 600; letter-spacing: 0.1em; }
+.portrait__plate em { font-style: normal; color: var(--sky); }
 
-.about__col { display: grid; gap: 32px; justify-items: start; }
+.about__col { display: grid; gap: 30px; justify-items: start; }
 /* min() keeps the measure at 56ch but never wider than the column */
-.about__bio { display: grid; gap: 18px; color: var(--muted); max-width: min(56ch, 100%); }
+.about__bio { display: grid; gap: 16px; color: var(--muted); max-width: min(56ch, 100%); }
 .about__bio p:first-child { color: var(--ice); }
+.about__bio b { color: var(--sky); font-weight: 600; }
 
-.about__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; }
+.about__stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; }
 .stat {
   display: grid;
   gap: 2px;
-  padding: 20px 22px;
+  padding: 18px 20px;
   background: var(--glass);
   border: 1px solid var(--line);
   border-radius: 16px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
+.stat:hover { border-color: var(--line-2); transform: translateY(-2px); }
 .stat__num {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.stat__label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--dim); text-transform: uppercase; }
+.stat__label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; color: var(--dim); text-transform: uppercase; }
+
+/* ============================================================
+   GITHUB CONTRIBUTION GRAPH
+   ============================================================ */
+.gh {
+  position: relative;
+  margin-top: 46px;
+  padding: 24px 26px 20px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.gh__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.gh__title {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.gh__sub { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 4px; }
+.gh__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  transition: color 0.2s var(--ease-out);
+}
+.gh__link:hover { color: var(--cyan); }
+
+/* the graph is fixed-pitch, so narrow screens scroll it rather than squash it */
+.gh__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79, 195, 247, 0.35) transparent;
+}
+/* max-width:none defeats the global image reset — without it the graph is
+   squashed to the container instead of keeping its pitch and scrolling */
+.gh__graph svg { display: block; max-width: none; height: auto; }
+
+.gh__mon, .gh__day { font-family: var(--font-mono); font-size: 9px; fill: var(--dim); letter-spacing: 0.06em; }
+
+.gh__cell {
+  fill: rgba(127, 219, 255, 0.07);
+  stroke: rgba(127, 219, 255, 0.05);
+  transition: fill 0.2s var(--ease-out);
+}
+.gh__cell[data-lv="1"] { fill: #0d3b6f; }
+.gh__cell[data-lv="2"] { fill: #1a63b8; }
+.gh__cell[data-lv="3"] { fill: #2e7cf6; }
+.gh__cell[data-lv="4"] { fill: #7fdbff; }
+.gh__cell:hover { stroke: var(--sky); stroke-width: 1.4; }
+
+/* column-by-column wipe once the panel scrolls into view */
+.gh__graph.is-drawn .gh__cell {
+  opacity: 0;
+  animation: ghCell 0.4s var(--ease-out) forwards;
+  animation-delay: calc(var(--c) * 11ms);
+}
+@keyframes ghCell { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+
+.gh__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+.gh__legend { display: inline-flex; align-items: center; gap: 4px; }
+.gh__legend i { width: 11px; height: 11px; border-radius: 2.5px; background: rgba(127, 219, 255, 0.07); }
+.gh__legend i[data-lv="1"] { background: #0d3b6f; }
+.gh__legend i[data-lv="2"] { background: #1a63b8; }
+.gh__legend i[data-lv="3"] { background: #2e7cf6; }
+.gh__legend i[data-lv="4"] { background: #7fdbff; }
+
+.gh__tip {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -100%);
+  padding: 7px 11px;
+  border-radius: 9px;
+  border: 1px solid var(--line-2);
+  background: rgba(3, 11, 26, 0.95);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ice);
+  white-space: nowrap;
+  pointer-events: none;
+}
 
 /* ============================================================
    FILTERS — Hick's Law: a short visible set, never a dropdown
@@ -1382,8 +1472,9 @@ kbd {
 @media (max-width: 1180px) { .rail { display: none; } }
 
 @media (max-width: 1020px) {
-  .about { grid-template-columns: 1fr; gap: 38px; }
-  .portrait { max-width: 380px; }
+  .about { grid-template-columns: 1fr; gap: 38px; align-items: start; }
+  .portrait { max-width: 340px; }
+  .portrait__frame { aspect-ratio: 4 / 5; min-height: 0; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   /* still spans the full row at two columns, but stacks internally */
   .card--featured { flex-direction: column; }
@@ -1403,11 +1494,26 @@ kbd {
   .gallery { grid-template-columns: 1fr; }
   .card--featured { grid-column: span 1; }
   .card--featured .card__title { font-size: 1.2rem; }
+  .gh { padding: 20px 16px 16px; }
+  .gh__foot { font-size: 0.66rem; }
+  /* eight chips wrap to four rows on a phone — swipe one row instead */
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -22px;
+    padding-inline: 22px;
+    padding-bottom: 4px;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter { flex: 0 0 auto; }
   .section { padding-top: 84px; }
   .hero { padding: 8px; }
   .hero__stage { height: calc(100svh - 16px); border-radius: 18px; }
   .hero__hud { padding-inline: 18px; font-size: 0.66rem; }
-  .about__stats { grid-template-columns: 1fr; }
+  .about__stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat { padding: 15px 16px; }
+  .stat__num { font-size: 1.8rem; }
   .matrix__grid { grid-template-columns: 1fr; }
   .contact__socials { gap: 14px; }
   .detail__panel { margin-top: 3vh; max-height: 94vh; }
@@ -1430,5 +1536,6 @@ kbd {
   .portrait__scan { opacity: 0; }
   .js .reveal, .js .word { opacity: 1; transform: none; filter: none; }
   .skill { opacity: 1; transform: none; filter: none; animation: none; }
+  .gh__graph.is-drawn .gh__cell { opacity: 1; animation: none; }
   .cursor { display: none !important; }
 }

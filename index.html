@@ -143,28 +143,25 @@
         <figure class="portrait reveal">
           <div class="portrait__frame">
             <img src="assets/rasty.jpg" alt="Rasty C. Espartero" width="1000" height="1500" decoding="async" />
-            <span class="portrait__tint" aria-hidden="true"></span>
             <span class="portrait__scan" aria-hidden="true"></span>
             <span class="portrait__grain" aria-hidden="true"></span>
           </div>
           <figcaption class="portrait__plate">
             <span><b>Rasty C. Espartero</b></span>
-            <span>BS Computer Science · PUP Manila</span>
-            <span>Taguig, Philippines</span>
+            <span>BS Computer Science &middot; <em>Magna Cum Laude</em></span>
+            <span>PUP Manila &middot; Taguig, Philippines</span>
           </figcaption>
         </figure>
 
         <div class="about__col">
           <div class="about__bio">
-            <p data-reveal="words">I build production software the whole way through &mdash; schema design, APIs, deployment pipelines, and interfaces people actually enjoy using. Most of my work lives where operations meet software: healthcare records, laboratory systems, inventory, and government platforms.</p>
-            <p data-reveal="words">I&rsquo;m a Computer Science student at the Polytechnic University of the Philippines and a DOST-SEI national scholar, working across PHP/Laravel, Python, JavaScript and AWS. I&rsquo;ve shipped as a freelancer, interned in DevOps at CGI, led a programming team at Cisco NetConnect, and helped found the AWS Cloud Club at PUP.</p>
+            <p data-reveal="words">I&rsquo;m a Real LIFE Foundation scholar graduate, and it&rsquo;s what I lead with, because it came with the principle I still operate by: <b>Leadership, Integrity, Faith, Excellence</b>. That&rsquo;s the standard I hold in every room I end up in and every piece of work I take, critical or routine. Going the extra mile is the default, not the exception.</p>
+            <p data-reveal="words">I graduated <b>Magna Cum Laude</b> in Computer Science from the Polytechnic University of the Philippines, backed by merit scholarships from DOST-SEI, the Real LIFE Foundation, Taguig City&rsquo;s LANI program and the NEON Foundation. I lead in the communities I join &mdash; founding member of the first AWS Cloud Club in the Philippines, recognized by AWS itself, and programming lead at my university&rsquo;s Cisco Network Organization.</p>
+            <p data-reveal="words">I&rsquo;ve worked as a full-stack engineer since 2022, across a wide range &mdash; marketing sites at one end, AI analytics and customer-relationship systems at the other. Some of that work is here; the rest sits behind NDA. AWS is where I&rsquo;m formally credentialed, and my daily tools are PHP/Laravel, Python and JavaScript &mdash; though I&rsquo;ve never treated that list as a limit.</p>
           </div>
 
-          <div class="about__stats" data-stagger>
-            <div class="stat reveal"><span class="stat__num" data-count="9" data-suffix="">0</span><span class="stat__label">systems shipped</span></div>
-            <div class="stat reveal"><span class="stat__num" data-count="8" data-suffix="">0</span><span class="stat__label">roles held</span></div>
-            <div class="stat reveal"><span class="stat__num" data-count="4" data-suffix="">0</span><span class="stat__label">years building</span></div>
-          </div>
+          <!-- figures render from live GitHub data, with a dated snapshot fallback -->
+          <div class="about__stats" id="about-stats" data-stagger></div>
 
           <a class="btn btn--ghost reveal" href="assets/Rasty-Espartero-CV.pdf" download data-cursor data-magnet>
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -172,13 +169,41 @@
           </a>
         </div>
       </div>
+
+      <!-- ============ CONTRIBUTION GRAPH — live from the GitHub API ============ -->
+      <section class="gh reveal" aria-labelledby="gh-h">
+        <header class="gh__head">
+          <div>
+            <h3 class="gh__title" id="gh-h">Contribution activity</h3>
+            <p class="gh__sub" id="gh-window">loading the last 12 months&hellip;</p>
+          </div>
+          <a class="gh__link" href="https://github.com/RastyFullStaxx" target="_blank" rel="noopener" data-cursor>
+            @RastyFullStaxx
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </header>
+
+        <div class="gh__scroll">
+          <div class="gh__graph" id="gh-graph"></div>
+        </div>
+
+        <footer class="gh__foot">
+          <span id="gh-note"></span>
+          <span class="gh__legend">
+            less
+            <i data-lv="0"></i><i data-lv="1"></i><i data-lv="2"></i><i data-lv="3"></i><i data-lv="4"></i>
+            more
+          </span>
+        </footer>
+        <div class="gh__tip" id="gh-tip" hidden></div>
+      </section>
     </section>
 
     <!-- ============ WORK — filterable gallery, expands to case study ============ -->
     <section class="section" id="work" aria-labelledby="work-h">
       <p class="eyebrow" data-reveal="type">// selected work</p>
       <h2 class="section__title" id="work-h" data-reveal="scramble">Built and shipped.</h2>
-      <p class="section__sub" data-reveal="words">Nine systems, ordered by scale &mdash; two of them built on models I trained myself. Select any card for the full case study.</p>
+      <p class="section__sub" data-reveal="words">Twenty-six projects, ordered by scale &mdash; production systems, two models I trained myself, a programming language I built from scratch, and games. Select any card for the full case study.</p>
 
       <!-- Hick's Law: five filters, never a long dropdown -->
       <div class="filters" id="work-filters" role="tablist" aria-label="Filter work"></div>

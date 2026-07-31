@@ -14,3 +14,6 @@ desktop.ini
 # Local preview tooling — an editor extension drops this in. It allows any
 # origin and includes arbitrary PHP, so it must never reach the repo.
 .php-preview-router.php
+
+# Local design-linter config and cache — tooling, not part of the site
+.impeccable/
