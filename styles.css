@@ -564,6 +564,7 @@ kbd {
   border: 1px solid var(--line-2);
   background: var(--navy);
   min-height: 420px;
+  max-height: 760px;   /* stops the crop going banner-tall as the bio grows */
   isolation: isolate;
 }
 /* photo ships true to color — no tint, no duotone, no color cast */
@@ -881,6 +882,18 @@ kbd {
 .card__title { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
 .card__desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
 
+/* the role answers "what were you on this?" before the reader opens anything */
+.card__role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--sky);
+}
+.card__role svg { flex: none; opacity: 0.8; }
+
 /* curated rank — the grid is ordered by scale, so the number means something */
 .card__index {
   position: absolute;
@@ -967,81 +980,90 @@ kbd {
 }
 
 /* ============================================================
-   STACK MATRIX
+   STACK GRID — every group visible at once, zero clicks
    ============================================================ */
-.matrix {
+.stackgrid {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.sgroup {
+  padding: 20px 22px 22px;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 20px;
   background: var(--glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  overflow: hidden;
+  transition: border-color 0.3s var(--ease-out);
 }
-.matrix__rail { display: grid; align-content: start; border-right: 1px solid var(--line); padding: 12px; gap: 2px; }
-.matrix__cat {
+.sgroup:hover { border-color: var(--line-2); }
+
+.sgroup__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 13px 16px;
-  border: 0;
-  border-radius: 12px;
-  background: none;
-  color: var(--muted);
-  font-size: 0.94rem;
+  gap: 9px;
+  padding-bottom: 14px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+.sgroup__icon { color: var(--cyan); flex: none; }
+.sgroup__head h3 {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  transition: color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ice);
 }
-.matrix__cat:hover { color: var(--ice); background: rgba(79, 195, 247, 0.07); }
-.matrix__cat[aria-selected="true"] { color: var(--ice); background: rgba(79, 195, 247, 0.12); }
-.matrix__cat b { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; color: var(--dim); }
-.matrix__cat[aria-selected="true"] b { color: var(--cyan); }
+.sgroup__n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); }
 
-.matrix__panel { padding: 22px 24px 26px; min-height: 340px; outline: none; }
-.matrix__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 28px; }
+.sgroup__chips { list-style: none; display: flex; flex-wrap: wrap; gap: 7px; }
 
-.skill {
-  display: grid;
-  grid-template-columns: 1fr auto;
+.chip {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(79, 195, 247, 0.07);
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(4px);
-  animation: skillIn 0.45s var(--ease-out) forwards;
-  animation-delay: calc(var(--i) * 32ms);
+  gap: 7px;
+  padding: 6px 11px 6px 9px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: rgba(6, 32, 69, 0.5);
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out),
+              background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
-@keyframes skillIn { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-.skill__name { font-weight: 500; font-size: 0.97rem; }
-.skill__meter { display: flex; gap: 4px; }
-.skill__meter i { width: 18px; height: 4px; border-radius: 2px; background: rgba(143, 168, 199, 0.2); }
-.skill--core .skill__meter i { background: var(--cyan); }
-.skill--working .skill__meter i:nth-child(-n + 2) { background: var(--electric); }
-.skill--basic .skill__meter i:first-child { background: var(--dim); }
+.chip:hover { transform: translateY(-2px); border-color: var(--line-2); color: var(--ice); }
 
-.matrix__legend {
+/* core reads first: brighter text, a live border, a faint lift */
+.chip--core {
+  color: var(--ice);
+  border-color: rgba(127, 219, 255, 0.42);
+  background: rgba(79, 195, 247, 0.11);
+}
+.chip--core:hover { background: rgba(79, 195, 247, 0.17); }
+
+/* icons take the chip's own color, so brand marks never fight the palette */
+.chip__ico { flex: none; opacity: 0.72; transition: opacity 0.2s var(--ease-out); }
+.chip:hover .chip__ico { opacity: 1; }
+.chip--core .chip__ico { opacity: 0.95; color: var(--sky); }
+
+.stack__legend {
   display: flex;
   flex-wrap: wrap;
   gap: 22px;
-  margin-top: 16px;
+  margin-top: 18px;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   color: var(--dim);
 }
-.matrix__legend span { display: inline-flex; align-items: center; gap: 8px; }
-.tier { width: 18px; height: 4px; border-radius: 2px; display: inline-block; }
-.tier--core { background: var(--cyan); }
-.tier--working { background: var(--electric); }
-.tier--basic { background: var(--dim); }
+.stack__legend span { display: inline-flex; align-items: center; gap: 8px; }
+.tier { display: inline-block; width: 18px; height: 4px; border-radius: 2px; }
+.tier--core { background: var(--sky); }
+.tier--working { background: rgba(143, 168, 199, 0.4); }
 
 /* ============================================================
    TIMELINE
@@ -1081,6 +1103,15 @@ kbd {
 }
 .tl-item--now::before { background: var(--cyan); }
 .tl-item__dates { font-family: var(--font-mono); font-size: 0.71rem; letter-spacing: 0.14em; color: var(--cyan); }
+.tl-item__gwa {
+  margin-left: 12px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(6, 32, 69, 0.6);
+  color: var(--sky);
+  letter-spacing: 0.08em;
+}
 .tl-item__role { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin-top: 5px; }
 .tl-item__org { color: var(--muted); font-size: 0.92rem; }
 .tl-item__desc { color: var(--dim); font-size: 0.93rem; max-width: 62ch; margin-top: 8px; }
@@ -1474,15 +1505,11 @@ kbd {
 @media (max-width: 1020px) {
   .about { grid-template-columns: 1fr; gap: 38px; align-items: start; }
   .portrait { max-width: 340px; }
-  .portrait__frame { aspect-ratio: 4 / 5; min-height: 0; }
+  .portrait__frame { aspect-ratio: 4 / 5; min-height: 0; max-height: none; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   /* still spans the full row at two columns, but stacks internally */
   .card--featured { flex-direction: column; }
   .card--featured .card__thumb { flex: none; aspect-ratio: 16 / 10; border-right: 0; border-bottom: 1px solid var(--line); }
-  .matrix { grid-template-columns: 1fr; }
-  .matrix__rail { border-right: 0; border-bottom: 1px solid var(--line); grid-auto-flow: column; overflow-x: auto; }
-  .matrix__cat { white-space: nowrap; }
-  .matrix__panel { min-height: 0; }
 }
 
 @media (max-width: 860px) {
@@ -1514,7 +1541,6 @@ kbd {
   .about__stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .stat { padding: 15px 16px; }
   .stat__num { font-size: 1.8rem; }
-  .matrix__grid { grid-template-columns: 1fr; }
   .contact__socials { gap: 14px; }
   .detail__panel { margin-top: 3vh; max-height: 94vh; }
   .lightbox__step { width: 42px; height: 42px; }
@@ -1535,7 +1561,6 @@ kbd {
   .marquee__track, .portrait__scan, .hero__scroll i::after { animation: none; }
   .portrait__scan { opacity: 0; }
   .js .reveal, .js .word { opacity: 1; transform: none; filter: none; }
-  .skill { opacity: 1; transform: none; filter: none; animation: none; }
   .gh__graph.is-drawn .gh__cell { opacity: 1; animation: none; }
   .cursor { display: none !important; }
 }
