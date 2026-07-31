@@ -55,7 +55,7 @@
       tech: ["Laravel", "PHP", "MySQL", "CI/CD", "Git", "Linux"], link: "",
     },
     {
-      abbr: "CR", title: "CureRays — Clinical Workflow System",
+      abbr: "CR", title: "Clinical Workflow System",
       cat: "Healthcare", year: "2026", role: "Lead Full-Stack Developer",
       metric: "17 clinic documents automated",
       summary: "A patient-course-centred workspace for a radiation oncology clinic, replacing a manual spreadsheet, Drive and Word workflow with one auditable record of treatment readiness.",
