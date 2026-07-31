@@ -3,42 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rasty — Full-Stack Developer</title>
-  <meta name="description" content="Rasty is a full-stack developer engineering complete systems — inventory, clinical records, labs and dashboards — from database to pixel." />
+  <title>Rasty Espartero — Full-Stack Developer</title>
+  <meta name="description" content="Rasty C. Espartero — full-stack developer in Taguig, Philippines. Systems engineering from database to interface: healthcare, laboratory, government and enterprise platforms." />
   <meta name="theme-color" content="#062045" />
-  <meta property="og:title" content="Rasty — Full-Stack Developer" />
-  <meta property="og:description" content="Full-stack systems that feel like the future." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rasty Espartero — Full-Stack Developer" />
+  <meta property="og:description" content="Systems engineering from database to interface." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Link previews ignore relative image paths. Once the site has a real
+       domain, make these two absolute, e.g.
+       https://rastyfullstaxx.github.io/portfolio/assets/rasty.jpg -->
+  <meta property="og:image" content="assets/rasty.jpg" />
+  <meta property="og:url" content="./" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237FDBFF'/%3E%3Cstop offset='1' stop-color='%232E7CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%23062045'/%3E%3Ctext x='32' y='44' font-family='Arial Black,Arial' font-size='34' font-weight='900' text-anchor='middle' fill='url(%23g)'%3ER%3C/text%3E%3C/svg%3E" />
 
-  <!-- Fonts: Clash Display (display) + Satoshi (body) via Fontshare, JetBrains Mono (HUD/labels) via Google -->
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="preload" as="image" href="assets/rasty.jpg" />
 
   <link rel="stylesheet" href="styles.css" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+  <!-- ============ BOOT SEQUENCE — real asset progress, shutter reveal ============ -->
+  <div class="boot" id="boot">
+    <div class="boot__slats" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="boot__inner" role="status" aria-live="polite">
+      <svg class="boot__mark" viewBox="0 0 460 96" aria-hidden="true">
+        <defs>
+          <linearGradient id="bootGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#7fdbff" /><stop offset="0.5" stop-color="#4fc3f7" /><stop offset="1" stop-color="#2e7cf6" />
+          </linearGradient>
+          <clipPath id="bootClip"><rect id="boot-wipe" x="0" y="0" width="0" height="96" /></clipPath>
+        </defs>
+        <text class="boot__stroke" x="230" y="70" text-anchor="middle">RASTY</text>
+        <text class="boot__fill" x="230" y="70" text-anchor="middle" clip-path="url(#bootClip)">RASTY</text>
+      </svg>
+      <div class="boot__bar"><span id="boot-fill"></span></div>
+      <p class="boot__meta">
+        <span id="boot-stage">establishing link</span>
+        <span id="boot-pct">00</span>
+      </p>
+    </div>
+  </div>
+
   <a class="skip-link" href="#about">Skip to content</a>
 
-  <!-- ============ NAV — Jakob's Law: conventional top bar, logo = home, links right ============ -->
+  <!-- ============ NAV — Jakob's Law: conventional bar, logo home, links right ============ -->
   <header class="nav" id="nav">
     <div class="nav__inner">
-      <a class="nav__logo" href="#top" aria-label="Rasty — back to top">Rasty<span class="nav__logo-dot">.</span></a>
+      <a class="nav__logo" href="#top" aria-label="Rasty Espartero — back to top">Rasty<span class="nav__logo-dot">.</span></a>
 
-      <!-- Miller's Law: 5 destinations, never more -->
       <nav class="nav__links" aria-label="Primary">
         <a href="#about" data-spy>About</a>
         <a href="#work" data-spy>Work</a>
         <a href="#stack" data-spy>Stack</a>
         <a href="#experience" data-spy>Experience</a>
+        <a href="#beyond" data-spy>Beyond</a>
         <a href="#contact" data-spy>Contact</a>
       </nav>
 
       <div class="nav__actions">
-        <!-- Tesler's Law: the palette absorbs navigation complexity -->
+        <!-- Tesler's Law: the palette absorbs navigation + search complexity -->
         <button class="nav__cmdk" id="cmdk-hint" type="button" aria-haspopup="dialog">
           <span class="nav__cmdk-label">Search</span><kbd>Ctrl</kbd><kbd>K</kbd>
         </button>
@@ -57,35 +88,41 @@
       <a href="#work">Work</a>
       <a href="#stack">Stack</a>
       <a href="#experience">Experience</a>
+      <a href="#beyond">Beyond</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
 
+  <!-- Section rail — always shows where you are (desktop) -->
+  <nav class="rail" id="rail" aria-label="Section index">
+    <a href="#about" data-rail><span class="rail__label">About</span><i></i></a>
+    <a href="#work" data-rail><span class="rail__label">Work</span><i></i></a>
+    <a href="#stack" data-rail><span class="rail__label">Stack</span><i></i></a>
+    <a href="#experience" data-rail><span class="rail__label">Experience</span><i></i></a>
+    <a href="#beyond" data-rail><span class="rail__label">Beyond</span><i></i></a>
+    <a href="#contact" data-rail><span class="rail__label">Contact</span><i></i></a>
+  </nav>
+
   <main id="top">
-    <!-- ============ HERO — the requested Vortex particle field ============ -->
+    <!-- ============ HERO — Vortex particle field ============ -->
     <section class="hero" aria-label="Introduction">
       <div class="hero__stage">
         <canvas class="hero__canvas" id="vortex" aria-hidden="true"></canvas>
 
         <div class="hero__hud" aria-hidden="true">
-          <span class="hud__status"><span class="hud__dot"></span>OPEN TO WORK</span>
-          <span class="hud__clock" id="clock">--:--:--</span>
+          <span>TAGUIG · PHILIPPINES</span>
+          <span id="clock">--:--:--</span>
         </div>
 
         <div class="hero__content">
-          <p class="hero__eyebrow">// full-stack developer</p>
+          <p class="hero__eyebrow" data-reveal="type">// full-stack developer</p>
           <h1 class="hero__title">Hi! I am <span class="grad-text">Rasty</span></h1>
-          <p class="hero__tagline">I engineer complete systems that feel like the future&nbsp;&mdash; from database to pixel.</p>
-
-          <!-- Hick's Law: exactly one primary action, one secondary -->
-          <div class="hero__ctas">
-            <a class="btn btn--primary" href="#work" data-magnet data-cursor>View selected work</a>
-            <a class="btn btn--ghost" href="#contact" data-magnet data-cursor>Get in touch</a>
-          </div>
-          <p class="hero__hint">press <kbd>Ctrl</kbd> + <kbd>K</kbd> to navigate anywhere</p>
         </div>
 
-        <!-- ambient animation must be pausable (a11y) -->
+        <a class="hero__scroll" href="#about" aria-label="Scroll to about">
+          <span>scroll</span><i aria-hidden="true"></i>
+        </a>
+
         <button class="hero__pause" id="vortex-toggle" type="button" aria-pressed="false" aria-label="Pause background animation">
           <svg class="ico-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
           <svg class="ico-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
@@ -93,84 +130,185 @@
       </div>
     </section>
 
-    <!-- Tech marquee — ambient, pauses on hover, removed under reduced motion -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__track" id="marquee-track"></div>
     </div>
 
-    <!-- ============ ABOUT — Proximity: bio and metrics are two clear clusters ============ -->
+    <!-- ============ ABOUT — Proximity: portrait, bio and metrics as clusters ============ -->
     <section class="section" id="about" aria-labelledby="about-h">
-      <p class="eyebrow reveal">// about</p>
-      <h2 class="section__title reveal" id="about-h">Systems, end to end.</h2>
-      <div class="about__grid">
-        <div class="about__bio reveal">
-          <p>I build production software the whole way through &mdash; schema design, APIs, background jobs, and interfaces people actually enjoy using. Most of my work lives where operations meet software: inventory, clinical records, laboratory pipelines, monitoring.</p>
-          <p>My default stack is PHP/Laravel and MySQL on the back, modern JavaScript on the front. I care about systems that stay fast, readable and maintainable long after launch day.</p>
-        </div>
-        <!-- Miller's Law: 3 metrics, not 9 -->
-        <div class="about__stats" data-stagger>
-          <div class="stat reveal"><span class="stat__num" data-count="10" data-suffix="+">0</span><span class="stat__label">systems shipped</span></div>
-          <div class="stat reveal"><span class="stat__num" data-count="3" data-suffix="+">0</span><span class="stat__label">years building</span></div>
-          <div class="stat reveal"><span class="stat__num" data-count="15" data-suffix="+">0</span><span class="stat__label">technologies in play</span></div>
+      <p class="eyebrow" data-reveal="type">// about</p>
+      <h2 class="section__title" id="about-h" data-reveal="scramble">Systems, end to end.</h2>
+
+      <div class="about">
+        <figure class="portrait reveal">
+          <div class="portrait__frame">
+            <img src="assets/rasty.jpg" alt="Rasty C. Espartero" width="1000" height="1500" decoding="async" />
+            <span class="portrait__tint" aria-hidden="true"></span>
+            <span class="portrait__scan" aria-hidden="true"></span>
+            <span class="portrait__grain" aria-hidden="true"></span>
+          </div>
+          <figcaption class="portrait__plate">
+            <span><b>Rasty C. Espartero</b></span>
+            <span>BS Computer Science · PUP Manila</span>
+            <span>Taguig, Philippines</span>
+          </figcaption>
+        </figure>
+
+        <div class="about__col">
+          <div class="about__bio">
+            <p data-reveal="words">I build production software the whole way through &mdash; schema design, APIs, deployment pipelines, and interfaces people actually enjoy using. Most of my work lives where operations meet software: healthcare records, laboratory systems, inventory, and government platforms.</p>
+            <p data-reveal="words">I&rsquo;m a Computer Science student at the Polytechnic University of the Philippines and a DOST-SEI national scholar, working across PHP/Laravel, Python, JavaScript and AWS. I&rsquo;ve shipped as a freelancer, interned in DevOps at CGI, led a programming team at Cisco NetConnect, and helped found the AWS Cloud Club at PUP.</p>
+          </div>
+
+          <div class="about__stats" data-stagger>
+            <div class="stat reveal"><span class="stat__num" data-count="9" data-suffix="">0</span><span class="stat__label">systems shipped</span></div>
+            <div class="stat reveal"><span class="stat__num" data-count="8" data-suffix="">0</span><span class="stat__label">roles held</span></div>
+            <div class="stat reveal"><span class="stat__num" data-count="4" data-suffix="">0</span><span class="stat__label">years building</span></div>
+          </div>
+
+          <a class="btn btn--ghost reveal" href="assets/Rasty-Espartero-CV.pdf" download data-cursor data-magnet>
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Download CV
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ============ WORK — cards rendered from app.js data ============ -->
+    <!-- ============ WORK — filterable gallery, expands to case study ============ -->
     <section class="section" id="work" aria-labelledby="work-h">
-      <p class="eyebrow reveal">// selected work</p>
-      <h2 class="section__title reveal" id="work-h">Built and shipped.</h2>
-      <p class="section__sub reveal">Six systems in production or active development. Full case studies on request.</p>
-      <div class="work__grid" id="work-grid" data-stagger><!-- cards injected --></div>
+      <p class="eyebrow" data-reveal="type">// selected work</p>
+      <h2 class="section__title" id="work-h" data-reveal="scramble">Built and shipped.</h2>
+      <p class="section__sub" data-reveal="words">Nine systems, ordered by scale &mdash; two of them built on models I trained myself. Select any card for the full case study.</p>
+
+      <!-- Hick's Law: five filters, never a long dropdown -->
+      <div class="filters" id="work-filters" role="tablist" aria-label="Filter work"></div>
+      <div class="gallery" id="work-grid"></div>
+      <p class="gallery__empty" id="work-empty" hidden>No projects in this category.</p>
     </section>
 
-    <!-- ============ STACK — Miller: 3 groups × 5 items ============ -->
+    <!-- ============ STACK — category rail + tiered skill matrix ============ -->
     <section class="section" id="stack" aria-labelledby="stack-h">
-      <p class="eyebrow reveal">// stack</p>
-      <h2 class="section__title reveal" id="stack-h">Tools I reach for.</h2>
-      <div class="stack__grid" id="stack-grid" data-stagger><!-- groups injected --></div>
+      <p class="eyebrow" data-reveal="type">// stack</p>
+      <h2 class="section__title" id="stack-h" data-reveal="scramble">Tools I reach for.</h2>
+      <p class="section__sub" data-reveal="words">Grouped by role in the system. Meters reflect depth of use, not marketing.</p>
+
+      <div class="matrix reveal">
+        <div class="matrix__rail" id="stack-rail" role="tablist" aria-orientation="vertical" aria-label="Stack categories"></div>
+        <div class="matrix__panel" id="stack-panel" role="tabpanel" tabindex="0"></div>
+      </div>
+      <p class="matrix__legend reveal">
+        <span><i class="tier tier--core"></i>core &mdash; daily driver</span>
+        <span><i class="tier tier--working"></i>working &mdash; shipped with it</span>
+        <span><i class="tier tier--basic"></i>basic &mdash; foundations</span>
+      </p>
     </section>
 
-    <!-- ============ EXPERIENCE ============ -->
+    <!-- ============ EXPERIENCE — full CV timeline ============ -->
     <section class="section" id="experience" aria-labelledby="exp-h">
-      <p class="eyebrow reveal">// timeline</p>
-      <h2 class="section__title reveal" id="exp-h">The road so far.</h2>
-      <ol class="timeline" id="timeline" data-stagger><!-- entries injected --></ol>
+      <p class="eyebrow" data-reveal="type">// timeline</p>
+      <h2 class="section__title" id="exp-h" data-reveal="scramble">The road so far.</h2>
+
+      <div class="track">
+        <div class="track__head">
+          <h3>Professional</h3>
+          <span class="track__count" id="exp-count"></span>
+        </div>
+        <ol class="timeline" id="timeline"></ol>
+      </div>
+
+      <div class="track">
+        <div class="track__head">
+          <h3>Education</h3>
+        </div>
+        <ol class="timeline timeline--edu" id="education"></ol>
+      </div>
     </section>
 
-    <!-- ============ CONTACT — Fitts: one huge target; Hick: three choices max ============ -->
+    <!-- ============ BEYOND THE CODE — trainings, community, awards ============ -->
+    <section class="section" id="beyond" aria-labelledby="beyond-h">
+      <p class="eyebrow" data-reveal="type">// beyond the code</p>
+      <h2 class="section__title" id="beyond-h" data-reveal="scramble">Trainings &amp; community.</h2>
+      <p class="section__sub" data-reveal="words">Programs, seminars, organizations and recognition. Select any card to open its detail and photos.</p>
+
+      <div class="filters" id="beyond-filters" role="tablist" aria-label="Filter involvement"></div>
+      <div class="gallery gallery--beyond" id="beyond-grid"></div>
+      <p class="gallery__empty" id="beyond-empty" hidden>No entries in this category.</p>
+    </section>
+
+    <!-- ============ CONTACT — Fitts: one huge target ============ -->
     <section class="section section--contact" id="contact" aria-labelledby="contact-h">
-      <p class="eyebrow reveal">// contact</p>
-      <h2 class="section__title section__title--xl reveal" id="contact-h">Let&rsquo;s build<br /><span class="grad-text">something.</span></h2>
-      <p class="section__sub reveal">Have a system that needs building &mdash; or rescuing? My inbox is open.</p>
+      <p class="eyebrow" data-reveal="type">// contact</p>
+      <h2 class="section__title section__title--xl" id="contact-h" data-reveal="scramble">Let's build something.</h2>
+      <p class="section__sub" data-reveal="words">Have a system that needs building &mdash; or rescuing? My inbox is open.</p>
+
       <div class="contact__row reveal">
-        <a class="btn btn--primary btn--lg" href="mailto:gemrasty@gmail.com?subject=Project%20inquiry" data-magnet data-cursor>gemrasty@gmail.com</a>
+        <a class="btn btn--primary btn--lg" href="mailto:rcannuespartero@gmail.com?subject=Project%20inquiry" data-magnet data-cursor>rcannuespartero@gmail.com</a>
         <button class="btn btn--ghost btn--lg" id="copy-email" type="button" data-cursor>Copy address</button>
       </div>
+
       <div class="contact__socials reveal">
-        <!-- EDIT: point these at your real profiles -->
-        <a href="https://github.com/" rel="noopener" target="_blank" data-cursor>GitHub</a>
-        <a href="https://www.linkedin.com/" rel="noopener" target="_blank" data-cursor>LinkedIn</a>
-        <a href="https://www.facebook.com/" rel="noopener" target="_blank" data-cursor>Facebook</a>
+        <a href="https://github.com/RastyFullStaxx" rel="noopener" target="_blank" data-cursor>GitHub</a>
+        <a href="https://www.linkedin.com/in/rastyespartero/" rel="noopener" target="_blank" data-cursor>LinkedIn</a>
+        <a href="tel:+639672132609" data-cursor>+63 967 213 2609</a>
+        <a href="assets/Rasty-Espartero-CV.pdf" download data-cursor>Resume</a>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>&copy; 2026 Rasty &mdash; RastyFullStaxx</p>
+    <p>&copy; 2026 Rasty C. Espartero &mdash; RastyFullStaxx</p>
     <p class="footer__laws">designed under Jakob &middot; Fitts &middot; Miller &middot; Hick &middot; Proximity &middot; Tesler</p>
   </footer>
 
-  <!-- Back to top — Fitts's Law: parked in the fast corner -->
   <button class="fab" id="fab" type="button" aria-label="Back to top" hidden>
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 
-  <!-- ============ COMMAND PALETTE — Tesler's Law made visible ============ -->
+  <!-- ============ DETAIL OVERLAY — shared by Work and Beyond ============ -->
+  <div class="detail" id="detail" hidden>
+    <div class="detail__backdrop" data-detail-close></div>
+    <article class="detail__panel" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <button class="detail__close" type="button" data-detail-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="detail__scroll" id="detail-body"></div>
+      <nav class="detail__nav">
+        <button type="button" id="detail-prev" class="detail__step">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          Previous
+        </button>
+        <span class="detail__pos" id="detail-pos"></span>
+        <button type="button" id="detail-next" class="detail__step">
+          Next
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </nav>
+    </article>
+  </div>
+
+  <!-- ============ LIGHTBOX — photo viewer for Beyond entries ============ -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" data-lb-close></div>
+    <!-- photo element is created by app.js, so no empty source ever ships -->
+    <figure class="lightbox__figure" id="lb-figure" role="dialog" aria-modal="true" aria-label="Photo viewer">
+      <figcaption id="lb-cap"></figcaption>
+    </figure>
+    <button class="lightbox__close" type="button" data-lb-close aria-label="Close photo">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lightbox__step lightbox__step--prev" type="button" id="lb-prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox__step lightbox__step--next" type="button" id="lb-next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- ============ COMMAND PALETTE ============ -->
   <div class="palette" id="palette" hidden>
     <div class="palette__backdrop" data-close></div>
     <div class="palette__panel" role="dialog" aria-modal="true" aria-label="Command palette">
-      <input class="palette__input" id="palette-input" type="text" placeholder="Type a command or section&hellip;"
+      <input class="palette__input" id="palette-input" type="text" placeholder="Jump to a section, project or command&hellip;"
              autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-activedescendant="" />
       <ul class="palette__list" id="palette-list" role="listbox" aria-label="Commands"></ul>
       <p class="palette__foot"><kbd>&uarr;&darr;</kbd> navigate &nbsp;<kbd>&#9166;</kbd> select &nbsp;<kbd>esc</kbd> close</p>
@@ -179,7 +317,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- Custom cursor (desktop, fine pointers, motion allowed) -->
   <div class="cursor" id="cursor" aria-hidden="true">
     <div class="cursor__dot"></div>
     <div class="cursor__ring"></div>

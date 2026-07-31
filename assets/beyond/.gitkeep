@@ -1,0 +1,12 @@
+Photos for the "Beyond the Code" section go in this folder.
+
+Drop image files here, then list them in that entry's `photos` array
+near the top of app.js:
+
+  photos: [
+    { src: "assets/beyond/aws-bootcamp-01.jpg", cap: "Cloud bootcamp, PUP Manila" },
+    { src: "assets/beyond/aws-bootcamp-02.jpg", cap: "Mentoring session" },
+  ]
+
+One photo or many — the card badge, gallery and lightbox all adapt.
+Keep files under ~300 KB each so the page stays fast.

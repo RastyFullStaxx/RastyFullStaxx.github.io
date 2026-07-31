@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Local preview tooling — an editor extension drops this in. It allows any
+# origin and includes arbitrary PHP, so it must never reach the repo.
+.php-preview-router.php

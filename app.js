@@ -1,7 +1,7 @@
 /* ============================================================
-   RASTY — portfolio engine
-   Vortex particle hero (simplex-noise flow field) + interactions.
-   All motion respects prefers-reduced-motion. No dependencies.
+   RASTY C. ESPARTERO — portfolio engine
+   Vanilla JS, no dependencies. All motion respects
+   prefers-reduced-motion. Content lives in the DATA block below.
    ============================================================ */
 (() => {
   "use strict";
@@ -10,108 +10,463 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const FINE = window.matchMedia("(pointer: fine)").matches;
+  const raf = window.requestAnimationFrame.bind(window);
+
+  const EMAIL = "rcannuespartero@gmail.com";
 
   /* ============================================================
-     DATA — the single place to edit your content.
-     EDIT: descriptions were inferred from your htdocs project
-     folders; tune them, and point `link` at live URLs or repos.
+     ░░ DATA — edit everything about the site from here ░░
+
+     PROJECTS are ordered by scale, biggest first — the 01..09 index
+     on each card reflects that curated ranking.
+
+     Per-project fields:
+       featured  wide hero tile at the top of the grid
+       ai        "model" (trained by me) or "agent" (LLM integration)
+       metric    the one number or fact worth reading at a glance
      ============================================================ */
   const PROJECTS = [
     {
-      abbr: "AE", title: "AgilaEye",
-      desc: "Real-time monitoring dashboard with live feeds, alerting and audit trails.",
-      tags: ["PHP", "MySQL", "JavaScript", "WebSockets"], link: "#contact",
+      abbr: "IF", title: "IntelliForm — Intelligent PDF Form Understanding",
+      cat: "AI & ML", year: "2025", role: "Lead Author & ML Engineer — Undergraduate Thesis",
+      featured: true, ai: "model", metric: "LayoutLMv3 + GNN + T5",
+      summary: "A multimodal deep-learning system that reads a PDF form the way a person does — text, layout and spatial structure at once — then labels every field and rewrites it as a plain-language prompt.",
+      highlights: [
+        "Trained a three-stage architecture: LayoutLMv3 for layout-aware embeddings, a Graph Neural Network over token positions to disambiguate fields that look identical in flat text, and a T5 head that summarises each field into readable guidance.",
+        "Built the pipeline end to end — annotation, training and inference — against FUNSD/XFUND-style datasets, with the trained classifier weights served directly from the app.",
+        "Evaluated at three levels: token-level precision, recall and F1; field-level IoU span matching; and ROUGE-L with METEOR for summary quality.",
+        "Served through FastAPI behind an interactive PDF.js workspace that overlays predicted fields and confidence onto the source document.",
+        "First author on the resulting undergraduate thesis at the Polytechnic University of the Philippines.",
+      ],
+      tech: ["PyTorch", "LayoutLMv3", "Graph Neural Networks", "T5", "FastAPI", "HuggingFace", "PDF.js"], link: "",
     },
     {
-      abbr: "IF", title: "IntelliForm",
-      desc: "Smart form builder with conditional logic, validation and response analytics.",
-      tags: ["PHP", "MySQL", "JavaScript"], link: "#contact",
+      abbr: "BBS", title: "Balik-Bayan Scientist Program System",
+      cat: "Government", year: "2025", role: "DevOps Intern — CGI",
+      metric: "DOST national programme",
+      summary: "Programme management platform for the Department of Science and Technology's Balik-Bayan Scientist Program, delivered during my DevOps internship at CGI.",
+      highlights: [
+        "Built the platform on Laravel against the programme's operational workflow.",
+        "Supported CI/CD across build, test and deployment environments so releases stayed reliable.",
+        "Managed branches and reviewed changes to keep a clean, traceable commit history.",
+        "Set up and troubleshot Linux environments, resolving configuration and dependency issues.",
+        "Documented runbooks and operational procedures that cut repeat manual work and improved handoffs.",
+      ],
+      tech: ["Laravel", "PHP", "MySQL", "CI/CD", "Git", "Linux"], link: "",
     },
     {
-      abbr: "SL", title: "StockLedger",
-      desc: "Inventory and stock-movement tracking built for small business operations.",
-      tags: ["PHP", "MySQL", "Bootstrap"], link: "#contact",
+      abbr: "CR", title: "CureRays — Clinical Workflow System",
+      cat: "Healthcare", year: "2026", role: "Full-Stack Developer",
+      metric: "17 clinic documents automated",
+      summary: "A patient-course-centred workspace for a radiation oncology clinic, replacing a manual spreadsheet, Drive and Word workflow with one auditable record of treatment readiness.",
+      highlights: [
+        "Automated the clinic's fractionation log — cumulative dose, skin dose, isodose and days-on-treatment compute per fraction, and a record that diverges from the prescription raises a review flag automatically.",
+        "Generates the clinic's own seventeen documents straight from structured forms: DOCX through docxtemplater, XLSX fraction logs through exceljs. Nobody retypes a Word template again.",
+        "Split persistence across two PostgreSQL databases — tokenised operational data and PHI — so protected health information never reaches client bundles, query strings, logs or browser storage.",
+        "Readiness is derived from evidence and approvals rather than manually asserted, and a pre-authorisation state machine blocks the Planning → On Treatment transition until it clears.",
+        "Built to WCAG 2.1 AA on Next.js 16 App Router, React 19 and Prisma, with write-through persistence that survives restart.",
+      ],
+      tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"], link: "",
     },
     {
-      abbr: "CR", title: "CureRays CRMS",
-      desc: "Clinic records management system covering patients, visits and billing.",
-      tags: ["PHP", "Laravel", "MySQL"], link: "#contact",
+      abbr: "AE", title: "AgilaEye — Explainable AI-Video Detection",
+      cat: "AI & ML", year: "2025", role: "ML Engineer & Desktop Developer",
+      ai: "model", metric: "F1 0.82 · sub-millisecond inference",
+      summary: "A lightweight, explainable detector that flags AI-generated video while you scroll a social feed — and names the visual signal that triggered the warning instead of just scoring it.",
+      highlights: [
+        "Trained and tuned two classifiers on a 100-video pilot corpus: a shallow MLP and a weighted k-NN, both over seven video-level features — luminance mean and deviation, colour deltas, temporal deltas and edge energy — sampled across eight frames per video at 224×224.",
+        "Ran a 65,340-candidate hyperparameter sweep across k, distance power and per-feature weights, selecting on the validation split only and never touching the held-out test set.",
+        "Best model reaches 0.80 accuracy, 0.90 recall and 0.82 F1 on the held-out test split at roughly 0.013 ms average inference.",
+        "Implemented both classifiers from scratch in the Python standard library — no ML framework in the inference path — which is what keeps the sidecar dependency-free and the latency sub-millisecond.",
+        "Explains each verdict through Grad-CAM and deterministic anomaly categories: object inconsistency, texture jitter, interaction anomaly and movement anomaly.",
+        "Ships as a Tauri and Svelte desktop app, with a documented upgrade path to a MobileNetV3-Small backbone under temporal pooling.",
+      ],
+      tech: ["Python", "Grad-CAM", "Tauri", "Svelte", "TypeScript", "ffmpeg"], link: "",
     },
     {
-      abbr: "FL", title: "FNB LIS",
-      desc: "Laboratory information system managing specimens, results and releases.",
-      tags: ["PHP", "MySQL", "JavaScript"], link: "#contact",
+      abbr: "LIS", title: "FNB — Audit-Grade Inventory Platform",
+      cat: "Enterprise", year: "2026", role: "Full-Stack Developer",
+      ai: "agent", metric: "Ships an LLM assistant",
+      summary: "A ground-up rebuild of a legacy inventory-audit system for bars and kitchens, built around the one number the client trusts absolutely: the variance between what should have been used and what actually was.",
+      highlights: [
+        "Shipped Stocky, a read-only assistant on the Anthropic SDK that explains variances, finds records and teaches the reconciliation formulas with links to the underlying data — six read-only tools behind a hard architectural rule that AI never mutates inventory.",
+        "Reconciliation maths is load-bearing, so it is pinned to hand-computed golden fixtures and guarded by a throwaway-database harness that migrates, seeds and asserts 43 coverage checks — a seeder change cannot silently move the answer key.",
+        "Committed records are immutable: corrections are void-and-chain, and every mutation writes an activity-log row inside the same transaction.",
+        "Offline-first by design — browser and desktop both write, reconciled through an append-dominant schema with globally unique IDs and a deliberately small enumerated mutation surface, proven by a 30-check sync harness.",
+        "TypeScript monorepo: React 19 and Tailwind v4 on Vite, Hono and Prisma on the server, and a pure-domain core package with no I/O.",
+      ],
+      tech: ["TypeScript", "React 19", "Anthropic SDK", "Hono", "Prisma", "Tailwind v4"], link: "",
     },
     {
-      abbr: "DP", title: "DigiPhoto Booth",
-      desc: "Self-service photo booth with live capture, templates and print flow.",
-      tags: ["JavaScript", "Canvas API", "PHP"], link: "#contact",
+      abbr: "AMK", title: "Amkor IMS — Internal Management System",
+      cat: "Enterprise", year: "2026", role: "Full-Stack Developer",
+      metric: "20 modules · 17 roles",
+      summary: "A private internal management system for a travel and tours company, covering twenty business modules across two branches — from accounts payable and BIR compliance through attendance, leave and visa processing.",
+      highlights: [
+        "Twenty modules — accounts payable and receivable, disbursement, bills monitoring, BIR compliance, IATA payments, cashbond, credit-card monitoring, reservations, visa, marketing and sales summary — isolated behind a modular Laravel architecture.",
+        "Seventeen canonical login roles enforced through role-based access control, with a full activity-log audit trail behind every record.",
+        "Real-time notifications over Laravel Reverb, media-library attachments, and scheduled database backups.",
+        "Laravel 12 with React and Inertia.js on PostgreSQL.",
+      ],
+      tech: ["Laravel 12", "React", "Inertia.js", "PostgreSQL", "Laravel Reverb"], link: "",
+    },
+    {
+      abbr: "SL", title: "StockLedger — Event-Sourced Inventory Ledger",
+      cat: "Enterprise", year: "2025", role: "Full-Stack Developer",
+      metric: "Immutable event ledger",
+      summary: "A distributed inventory system where stock is never stored, only derived. Every change is an immutable event, so any historical state can be reconstructed exactly.",
+      highlights: [
+        "Fully immutable event ledger — no edits, no deletions — with event replay as the single source of truth.",
+        "Offline-first operation through a device-local event queue and strict atomic batch synchronisation.",
+        "Multi-tenant isolation with a separate database per client.",
+        "Built for audit-grade traceability across multiple locations, where every manual adjustment carries accountability.",
+      ],
+      tech: ["TypeScript", "Node.js", "Event Sourcing", "SQLite"], link: "",
+    },
+    {
+      abbr: "ENC", title: "ENC BGC One — Shared Services Portal",
+      cat: "Enterprise", year: "2025", role: "Lead Developer & Technical Adviser",
+      metric: "Thesis-backed delivery",
+      summary: "A smart booking and shared-services portal for Every Nation Campus BGC. I led development end to end, and the build doubled as the thesis study for an undergraduate group at the University of Makati.",
+      highlights: [
+        "Acted as lead developer and technical adviser across the full delivery, from requirements through deployment.",
+        "Built on Laravel 12 with Blade and Vite, including a documented deployment path for shared hosting.",
+        "Handed over with architecture, deployment, security-hardening and operations documentation so the team could maintain it without me.",
+        "Mentored the student team through version control and delivery practice.",
+      ],
+      tech: ["Laravel 12", "PHP 8.2", "Blade", "Vite", "MySQL"], link: "",
+    },
+    {
+      abbr: "DPB", title: "DigiPhoto — Event Booth Platform",
+      cat: "Enterprise", year: "2025", role: "Full-Stack Developer",
+      metric: "Multi-tenant · .NET",
+      summary: "A self-service event photo booth platform that turns capture, layout, payment, printing and private phone delivery into one durable workflow — one that survives interruption.",
+      highlights: [
+        "Touch-first guest session designed for people who have never seen the system, standing in mixed event lighting, often in groups.",
+        "Separate surfaces for the guest, the operator monitoring camera and printer readiness, and the owner configuring packages, templates, staff, devices and retention.",
+        "The Windows booth engine stays the hardware authority while the UI renders as responsive web surfaces in a WebView2 host and in owner browsers.",
+        "Session recovery so an interrupted booth session resumes instead of being lost.",
+      ],
+      tech: [".NET", "C#", "WebView2", "TypeScript"], link: "",
     },
   ];
-
-  /* Miller's Law: 3 groups × 5 items */
-  const STACK = [
-    { name: "Frontend", items: ["JavaScript", "React", "Next.js", "Tailwind CSS", "HTML / CSS"] },
-    { name: "Backend", items: ["PHP", "Laravel", "Node.js", "MySQL", "REST APIs"] },
-    { name: "Tools & Ops", items: ["Git / GitHub", "Docker", "Apache / XAMPP", "Figma", "Postman"] },
-  ];
-
-  /* EDIT: your real roles and dates */
-  const TIMELINE = [
-    {
-      dates: "2024 — NOW", role: "Freelance Full-Stack Developer",
-      desc: "Designing and shipping client systems end to end — inventory, clinical records, laboratory pipelines and dashboards.",
-    },
-    {
-      dates: "2023 — 2024", role: "Systems Developer",
-      desc: "Built internal tools and operational software; owned schema design, APIs and deployment.",
-    },
-    {
-      dates: "2022", role: "RastyFullStaxx begins",
-      desc: "First production PHP applications went live. Never stopped shipping since.",
-    },
-  ];
-
-  const MARQUEE = ["PHP", "LARAVEL", "MYSQL", "JAVASCRIPT", "REACT", "NEXT.JS", "TAILWIND", "NODE.JS", "PYTHON", "REST APIS", "GIT", "DOCKER"];
-
-  const EMAIL = "gemrasty@gmail.com";
 
   /* ============================================================
-     RENDER — inject data-driven sections
+     BEYOND THE CODE — trainings, seminars, community, recognition.
+
+     TO ADD PHOTOS: drop image files into  assets/beyond/
+     then list the filenames in that entry's `photos` array, e.g.
+       photos: [
+         { src: "assets/beyond/aws-bootcamp-01.jpg", cap: "Cloud bootcamp, PUP Manila" },
+         { src: "assets/beyond/aws-bootcamp-02.jpg", cap: "Mentoring session" },
+       ]
+     One photo or many — the gallery and lightbox handle both.
      ============================================================ */
-  function render() {
-    $("#work-grid").innerHTML = PROJECTS.map((p) => `
-      <article class="card reveal">
-        <div class="card__thumb"><span class="card__abbr">${p.abbr}</span></div>
-        <div class="card__body">
-          <h3 class="card__title">${p.title}</h3>
-          <p class="card__desc">${p.desc}</p>
-          <div class="card__tags">${p.tags.map((t) => `<span class="card__tag">${t}</span>`).join("")}</div>
-        </div>
-        <a class="card__link" href="${p.link}" aria-label="${p.title} — ask me about it"></a>
-      </article>`).join("");
+  const BEYOND = [
+    {
+      abbr: "AWS", title: "AWS Cloud Club — PUP",
+      cat: "Community", year: "2022 — 2025", role: "Founding Core Member & Cloud Practitioner",
+      summary: "Helped establish the AWS Cloud Club at the Polytechnic University of the Philippines to promote cloud literacy and developer collaboration across the PUP network.",
+      highlights: [
+        "Initiated the club's establishment and its first cohort of members.",
+        "Facilitated technical bootcamps and mentoring sessions for peers.",
+        "Served as a founding member recognized in the 2023 charter.",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "CSC", title: "Cisco NetConnect — PUP",
+      cat: "Community", year: "2024 — 2025", role: "Programming Lead",
+      summary: "Directed a multidisciplinary programming team specializing in batch scripting, Python and JavaScript, overseeing workflow automation and backend optimization.",
+      highlights: [
+        "Designed modular coding exercises to train members in professional version control.",
+        "Mentored on algorithmic thinking and project scalability.",
+        "Held code integrity and maintainability standards across deployments.",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "DOST", title: "DOST-SEI Scholar Program",
+      cat: "Scholarship", year: "2025", role: "Intern & National Scholar",
+      summary: "Recognized as a national government scholar for academic performance and innovation potential in computer science, with capacity-building work alongside it.",
+      highlights: [
+        "Engaged in programs promoting scientific research, digital transformation and public service technology.",
+        "Contributed to seminars and workshops on AI literacy, open data practices and ethical computing.",
+        "Aligned project work with DOST's national development goals.",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "CGI", title: "CGI DevOps Internship",
+      cat: "Training", year: "2025", role: "DevOps Intern",
+      summary: "Internship at Canadian Technology Company Incorporated (CGI) supporting release engineering across development environments.",
+      highlights: [
+        "Assisted build, test and deployment workflows for reliable releases.",
+        "Managed branches and reviewed changes under Git-based version control.",
+        "Set up and troubleshot Linux environments, resolving configuration and dependency issues.",
+        "Documented runbooks that improved handoffs and team readiness.",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "FE", title: "Front-End Development Bootcamp",
+      cat: "Training", year: "—", role: "Certified",
+      summary: "Intensive front-end program covering layout, component architecture and interactive interfaces.",
+      highlights: ["CSS and Bootstrap layout systems.", "jQuery and modern JavaScript.", "React component architecture."],
+      photos: [],
+    },
+    {
+      abbr: "DS", title: "Data Science & Machine Learning Foundations",
+      cat: "Training", year: "—", role: "Certified",
+      summary: "Foundations program across the Python data stack and applied machine learning.",
+      highlights: ["Pandas and NumPy for data handling.", "scikit-learn for classical modelling.", "PyTorch and TensorFlow fundamentals."],
+      photos: [],
+    },
+    {
+      abbr: "SEC", title: "Nexus Technologies Cybersecurity Training",
+      cat: "Training", year: "—", role: "Certified",
+      summary: "Security training covering threat models, defensive practice and secure development habits.",
+      highlights: ["Common attack surfaces in web systems.", "Defensive configuration and hardening.", "Secure handling of credentials and data."],
+      photos: [],
+    },
+    {
+      abbr: "AWD", title: "Academic Distinctions",
+      cat: "Awards", year: "2020 — 2025", role: "Recognition",
+      summary: "Academic and professional recognition across university, senior high school and industry training.",
+      highlights: [
+        "Consistent President's Lister, Polytechnic University of the Philippines (2022–2025).",
+        "Overall Best Capstone Project and Capstone Project Champion, University of Makati (2022).",
+        "Graduated with High Honors, Senior High School (2022).",
+        "Most Excellent Trainee, Sutherland BGC (2022).",
+        "Dean's Lister and President's Lister, Fort Bonifacio High School (2020).",
+      ],
+      photos: [],
+    },
+    {
+      abbr: "SCH", title: "Scholarship Grants",
+      cat: "Scholarship", year: "2022 — 2025", role: "Grantee",
+      summary: "Competitive scholarship grants and academic selections across government and private foundations.",
+      highlights: [
+        "Department of Science and Technology–SEI Undergraduate Scholarship.",
+        "Real LIFE Foundation Private Scholarship.",
+        "LANI Local Government Scholarship.",
+        "NEON Foundation Private Scholarship.",
+        "Qualified for admission in Computer Science at RTU, UMak and PLM.",
+        "Regional Journalism in English — Sportswriting Qualifier.",
+      ],
+      photos: [],
+    },
+  ];
 
-    $("#stack-grid").innerHTML = STACK.map((g) => `
-      <div class="stack-group reveal">
-        <h3 class="stack-group__name">${g.name}</h3>
-        <ul>${g.items.map((i) => `<li>${i}</li>`).join("")}</ul>
-      </div>`).join("");
+  /* Tiers are grounded in the CV: "specialized in" → core,
+     "(basic)" → basic, everything listed → working. */
+  const STACK = [
+    {
+      name: "Languages", items: [
+        ["Python", "core"], ["JavaScript", "core"], ["PHP", "core"], ["SQL", "core"],
+        ["TypeScript", "working"], ["Java", "working"], ["C", "working"], ["C++", "working"],
+        ["C#", "working"], ["Bash", "working"],
+      ],
+    },
+    {
+      name: "Frameworks", items: [
+        ["Laravel", "core"], ["React", "core"], ["Node.js", "working"], ["Express.js", "working"],
+        ["Vue.js", "working"], ["Django", "working"], ["Flask", "working"], ["Bootstrap", "working"],
+        ["Tailwind CSS", "working"], ["HTML5 / CSS3", "core"],
+      ],
+    },
+    {
+      name: "Data & ML", items: [
+        ["MySQL", "core"], ["PostgreSQL", "working"], ["SQLite", "working"], ["MongoDB", "working"],
+        ["Firebase", "working"], ["Pandas", "working"], ["NumPy", "working"],
+        ["scikit-learn", "working"], ["PyTorch", "basic"], ["TensorFlow", "basic"],
+      ],
+    },
+    {
+      name: "Cloud & DevOps", items: [
+        ["Git / GitHub", "core"], ["Docker", "working"], ["CI/CD pipelines", "working"],
+        ["AWS EC2", "working"], ["AWS S3", "working"], ["AWS RDS", "working"],
+        ["AWS IAM", "working"], ["AWS Lambda", "basic"], ["Linux", "working"], ["Apache", "working"],
+      ],
+    },
+    {
+      name: "Practice", items: [
+        ["REST API design", "core"], ["Responsive design", "core"], ["Agile / Scrum", "working"],
+        ["Modular architecture", "working"], ["Shell scripting", "working"], ["Build automation", "working"],
+        ["JSON", "core"], ["Cross-browser support", "working"], ["Technical documentation", "working"],
+        ["GraphQL", "basic"],
+      ],
+    },
+  ];
 
-    $("#timeline").innerHTML = TIMELINE.map((t) => `
-      <li class="tl-item reveal">
-        <p class="tl-item__dates">${t.dates}</p>
-        <h3 class="tl-item__role">${t.role}</h3>
-        <p class="tl-item__desc">${t.desc}</p>
-      </li>`).join("");
+  const TIMELINE = [
+    {
+      dates: "2025", role: "DevOps Intern", org: "Canadian Technology Company Incorporated (CGI)", now: false,
+      points: [
+        "Supported CI/CD operations across build, test and deployment workflows.",
+        "Managed branches and reviewed changes under Git-based version control.",
+        "Set up and troubleshot Linux environments, resolving configuration and dependency issues.",
+        "Built the Balik-Bayan Scientist Program System using Laravel and specialized frameworks.",
+      ],
+    },
+    {
+      dates: "2025", role: "Intern & Scholar", org: "Department of Science and Technology — SEI", now: false,
+      points: [
+        "Recognized as a national government scholar for academic performance and innovation potential.",
+        "Engaged in capacity-building programs across research, digital transformation and public service technology.",
+        "Contributed to seminars on AI literacy, open data practices and ethical computing.",
+      ],
+    },
+    {
+      dates: "2025", role: "Technical Adviser & Project Manager", org: "ENC — University of Makati", now: false,
+      points: [
+        "Lead developer for the Every Nation BGC One Shared Services system.",
+        "The build also served as the thesis study for an undergraduate group at the University of Makati.",
+      ],
+    },
+    {
+      dates: "2024 — 2025", role: "Programming Lead", org: "Cisco NetConnect PUP", now: false,
+      points: [
+        "Directed a multidisciplinary team across batch scripting, Python and JavaScript.",
+        "Designed modular coding exercises and Git-based collaboration practice.",
+        "Mentored on algorithmic thinking, scalability and code integrity.",
+      ],
+    },
+    {
+      dates: "2022 — 2025", role: "Founding Core Member & Cloud Practitioner", org: "AWS Cloud Club — PUP", now: false,
+      points: [
+        "Initiated the club's establishment to promote cloud literacy across the PUP network.",
+        "Facilitated technical bootcamps and mentoring sessions for peers.",
+      ],
+    },
+    {
+      dates: "2022 — NOW", role: "Full-Stack Developer", org: "Freelance", now: true,
+      points: [
+        "Delivered end-to-end web applications spanning front-end, back-end and database architecture.",
+        "Specialized in Python, JavaScript, Laravel, React and SQL.",
+        "Implemented modular architecture and scalable deployment strategies.",
+        "Collaborated with clients across sectors, translating requirements into maintainable systems.",
+      ],
+    },
+    {
+      dates: "2022 — NOW", role: "Legal Assistant", org: "Melba Cawit Law Firm", now: true,
+      points: [
+        "Developed cross-cultural competencies through Western legal processes and business correspondence.",
+        "Supported documentation, scheduling and client coordination under strict confidentiality.",
+      ],
+    },
+    {
+      dates: "2022 — 2023", role: "Technical Care Expert", org: "Sutherland Global Philippines BGC", now: false,
+      points: [
+        "Delivered technical support across network, software and hardware troubleshooting.",
+        "Achieved top performance metrics among peers in a high-pressure environment.",
+        "Named Most Excellent Trainee.",
+      ],
+    },
+  ];
 
-    /* duplicated once for the seamless loop */
-    $("#marquee-track").innerHTML = [...MARQUEE, ...MARQUEE]
-      .map((m) => `<span class="marquee__item">${m}</span>`).join("");
+  const EDUCATION = [
+    {
+      dates: "2022 — NOW", role: "BS Computer Science", org: "Polytechnic University of the Philippines, Manila", now: true,
+      points: ["Awarded Consistent President's Lister."],
+    },
+    {
+      dates: "2020 — 2022", role: "STEM Strand", org: "Higher School of the University of Makati", now: false,
+      points: ["Graduated with High Honors.", "Awarded Overall Champion in Capstone Project."],
+    },
+  ];
+
+  const MARQUEE = ["PYTHON", "JAVASCRIPT", "PHP", "LARAVEL", "REACT", "MYSQL", "AWS", "DOCKER", "NODE.JS", "TYPESCRIPT", "GIT", "LINUX", "POSTGRESQL", "TENSORFLOW"];
+
+  /* ============================================================
+     BOOT SEQUENCE — progress is real, tied to actual asset loads
+     ============================================================ */
+  function boot() {
+    const el = $("#boot");
+    const fill = $("#boot-fill");
+    const pct = $("#boot-pct");
+    const stageEl = $("#boot-stage");
+    const wipe = $("#boot-wipe");
+
+    $$(".boot__slats i").forEach((s, i) => s.style.setProperty("--n", i));
+
+    if (RM) {
+      el.remove();
+      document.body.classList.remove("is-locked");
+      return Promise.resolve();
+    }
+
+    document.body.classList.add("is-locked");
+
+    const STAGES = [
+      [0.00, "establishing link"],
+      [0.30, "loading typefaces"],
+      [0.55, "decoding assets"],
+      [0.78, "compiling particle field"],
+      [0.96, "ready"],
+    ];
+
+    /* every signal is a real load, not a fake timer */
+    const img = new Image();
+    img.src = "assets/rasty.jpg";
+    const signals = [
+      document.fonts ? document.fonts.ready : Promise.resolve(),
+      img.decode ? img.decode().catch(() => {}) : Promise.resolve(),
+      new Promise((r) => (document.readyState === "complete" ? r() : window.addEventListener("load", r, { once: true }))),
+    ];
+
+    let done = 0;
+    signals.forEach((p) => Promise.resolve(p).finally(() => done++));
+
+    const t0 = performance.now();
+    const MIN_MS = 1400;   /* never flash past faster than this */
+    const MAX_MS = 6000;   /* never trap the visitor, whatever stalls */
+
+    return new Promise((resolve) => {
+      let cur = 0;
+      let last = t0;
+
+      function finish() {
+        fill.style.transform = "scaleX(1)";
+        pct.textContent = "100";
+        wipe.setAttribute("width", "460");
+        stageEl.textContent = "ready";
+        el.classList.add("is-out");
+        document.body.classList.remove("is-locked");
+        window.setTimeout(() => { el.remove(); resolve(); }, 620);
+      }
+
+      function tick(now) {
+        const elapsed = now - t0;
+        const dt = Math.max(0, now - last);
+        last = now;
+
+        /* target blends real completion with a time floor so the bar always moves */
+        const real = done / signals.length;
+        const floor = Math.min(0.9, elapsed / MIN_MS);
+        const target = Math.max(real, floor) * (done === signals.length ? 1 : 0.92);
+
+        /* ease on a time constant, not a per-frame fraction — a throttled or
+           low-FPS tab would otherwise crawl toward the target and sit at 99% */
+        cur += (target - cur) * (1 - Math.exp(-dt / 160));
+        const p = Math.min(cur, 1);
+
+        fill.style.transform = `scaleX(${p})`;
+        pct.textContent = String(Math.round(p * 100)).padStart(2, "0");
+        wipe.setAttribute("width", String(460 * p));
+        const stage = STAGES.filter((s) => p >= s[0]).pop();
+        if (stage && stageEl.textContent !== stage[1]) stageEl.textContent = stage[1];
+
+        const settled = done === signals.length && (p > 0.99 || elapsed > MIN_MS + 800);
+        if ((settled && elapsed > MIN_MS) || elapsed > MAX_MS) { finish(); return; }
+        raf(tick);
+      }
+      raf(tick);
+    });
   }
 
   /* ============================================================
-     VORTEX — simplex-noise flow field (canvas 2D)
-     Same algorithm as the hero you asked for, tuned navy.
+     VORTEX — simplex-noise flow field on canvas 2D
      ============================================================ */
   function createNoise3D(random = Math.random) {
     const F3 = 1 / 3, G3 = 1 / 6;
@@ -168,13 +523,13 @@
     const RANGE_Y = 130, BASE_TTL = 50, RANGE_TTL = 150;
     const BASE_SPEED = 0.1, RANGE_SPEED = 1.5;
     const BASE_RADIUS = 1, RANGE_RADIUS = 2;
-    const BASE_HUE = 200, RANGE_HUE = 80;          /* navy → cyan → violet */
+    const BASE_HUE = 200, RANGE_HUE = 80;
     const NOISE_STEPS = 3, X_OFF = 0.00125, Y_OFF = 0.00125, Z_OFF = 0.0005;
     const TAU = Math.PI * 2;
 
     const props = new Float32Array(LEN);
     const center = [0, 0];
-    let tick = 0, raf = 0, running = false, paused = false, inView = true;
+    let tick = 0, id = 0, running = false, paused = false, inView = true;
 
     const rand = (n) => n * Math.random();
     const randRange = (n) => n - rand(2 * n);
@@ -227,6 +582,8 @@
       }
     }
 
+    /* the canvas stays transparent — the stage's CSS paints the navy.
+       Filling it here would get amplified by the lighter+brightness glow. */
     function glow() {
       ctx.save();
       ctx.filter = "blur(8px) brightness(200%)";
@@ -244,28 +601,18 @@
       ctx.restore();
     }
 
-    /* NOTE: the canvas stays transparent — the stage's CSS paints the navy.
-       Filling it here would get amplified by the lighter+brightness glow. */
     function frame() {
       tick++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       step();
       glow();
-      raf = window.requestAnimationFrame(frame);
+      id = raf(frame);
     }
 
-    function start() {
-      if (running || paused || !inView) return;
-      running = true;
-      raf = window.requestAnimationFrame(frame);
-    }
-    function stop() {
-      running = false;
-      window.cancelAnimationFrame(raf);
-    }
+    function start() { if (running || paused || !inView) return; running = true; id = raf(frame); }
+    function stop() { running = false; window.cancelAnimationFrame(id); }
 
     function staticFrame() {
-      /* reduced motion: simulate ~90 steps once, no loop */
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let f = 0; f < 90; f++) { tick++; step(); }
       glow();
@@ -274,18 +621,13 @@
     resize();
     for (let i = 0; i < LEN; i += PROPS) initParticle(i);
 
-    /* stage-driven sizing: survives hidden-tab loads, mobile URL bars, late layout */
     new ResizeObserver(() => {
       if (canvas.width === stage.clientWidth && canvas.height === stage.clientHeight) return;
       resize();
       if (RM || paused) staticFrame();
     }).observe(stage);
 
-    if (RM) {
-      staticFrame();
-      toggle.hidden = true;              /* nothing running to pause */
-      return;
-    }
+    if (RM) { staticFrame(); toggle.hidden = true; return; }
 
     /* battery-friendly: only animate while the hero is on screen */
     new IntersectionObserver(([e]) => {
@@ -304,178 +646,597 @@
   }
 
   /* ============================================================
-     NAV — scrolled state, progress hairline, scrollspy
+     TEXT REVEAL ENGINE — scramble / typewriter / word stagger
      ============================================================ */
+  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>*+-";
+
+  function prepareText() {
+    /* glyphs are grouped inside word wrappers — inline-block spans would
+       otherwise let the browser break a line between any two letters */
+    $$('[data-reveal="scramble"]').forEach((el) => {
+      const text = el.textContent;
+      el.textContent = "";
+      text.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (!part.trim()) { el.appendChild(document.createTextNode(part)); return; }
+        const word = document.createElement("span");
+        word.className = "gword";
+        [...part].forEach((ch) => {
+          const s = document.createElement("span");
+          s.className = "glyph";
+          s.dataset.ch = ch;
+          s.textContent = ch;
+          word.appendChild(s);
+        });
+        el.appendChild(word);
+      });
+      el.dataset.text = text;
+    });
+
+    $$('[data-reveal="words"]').forEach((el) => {
+      const words = el.textContent.split(/(\s+)/);
+      el.textContent = "";
+      let i = 0;
+      words.forEach((w) => {
+        if (!w.trim()) { el.appendChild(document.createTextNode(w)); return; }
+        const s = document.createElement("span");
+        s.className = "word";
+        s.style.setProperty("--i", i++);
+        s.textContent = w;
+        el.appendChild(s);
+      });
+    });
+
+    $$('[data-reveal="type"]').forEach((el) => {
+      el.dataset.text = el.textContent;
+      el.textContent = "";
+    });
+  }
+
+  function runScramble(el) {
+    const glyphs = $$(".glyph", el);
+    if (RM) { glyphs.forEach((g) => g.classList.add("is-on")); return; }
+    const LOCK_STEP = 34;       /* ms between each glyph locking */
+    const SPIN = 260;           /* ms a glyph spends cycling */
+    const t0 = performance.now();
+
+    function frame(now) {
+      const t = now - t0;
+      let live = false;
+      glyphs.forEach((g, i) => {
+        const ch = g.dataset.ch;
+        if (ch === " ") { g.classList.add("is-on"); return; }
+        const startAt = i * LOCK_STEP;
+        if (t < startAt) { live = true; g.textContent = ""; return; }
+        if (t > startAt + SPIN) {
+          if (!g.classList.contains("is-on")) {
+            g.classList.remove("is-scrambling");
+            g.classList.add("is-on");
+            g.textContent = ch;
+          }
+          return;
+        }
+        live = true;
+        g.classList.add("is-scrambling");
+        g.textContent = GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      });
+      if (live) raf(frame);
+    }
+    raf(frame);
+  }
+
+  function runType(el) {
+    const text = el.dataset.text || "";
+    if (RM) { el.textContent = text; return; }
+    el.classList.add("caret");
+    let i = 0;
+    const step = () => {
+      el.textContent = text.slice(0, ++i);
+      if (i < text.length) window.setTimeout(step, 26);
+      else window.setTimeout(() => el.classList.remove("caret"), 900);
+    };
+    step();
+  }
+
+  function initReveals() {
+    $$("[data-stagger]").forEach((group) => {
+      $$(".reveal", group).forEach((el, i) => el.style.setProperty("--i", i));
+    });
+
+    const targets = $$(".reveal, [data-reveal]");
+    if (RM) {
+      targets.forEach((el) => {
+        el.classList.add("is-in");
+        if (el.dataset.reveal === "scramble") runScramble(el);
+        if (el.dataset.reveal === "type") el.textContent = el.dataset.text || "";
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        io.unobserve(el);
+        el.classList.add("is-in");
+        if (el.dataset.reveal === "scramble") runScramble(el);
+        else if (el.dataset.reveal === "type") runType(el);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+
+    targets.forEach((el) => io.observe(el));
+  }
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* "model" = trained by Rasty, "agent" = LLM integration. Different claims,
+     so they get different labels rather than one blanket "AI" badge. */
+  const AI_LABEL = { model: "Trained model", agent: "LLM agent" };
+
+  function cardHTML(item, i, kind) {
+    const photoBadge = kind === "beyond" && item.photos.length
+      ? `<span class="card__photos">
+           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+           ${item.photos.length}
+         </span>` : "";
+
+    const chips = kind === "beyond" ? [item.role] : (item.tech || []).slice(0, 4);
+    const aiBadge = item.ai
+      ? `<span class="card__ai" data-ai="${esc(item.ai)}">
+           <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg>
+           ${esc(AI_LABEL[item.ai] || "AI")}
+         </span>` : "";
+    const metric = item.metric ? `<span class="card__metric">${esc(item.metric)}</span>` : "";
+
+    return `
+      <button class="card${item.featured ? " card--featured" : ""}" type="button"
+              data-cat="${esc(item.cat)}" data-i="${i}" data-kind="${kind}"
+              aria-label="${esc(item.title)} — open details">
+        <span class="card__thumb">
+          <span class="card__kind">${esc(item.cat)}</span>
+          <span class="card__year">${esc(item.year)}</span>
+          <span class="card__abbr">${esc(item.abbr)}</span>
+          ${kind === "work" ? `<span class="card__index">${String(i + 1).padStart(2, "0")}</span>` : ""}
+        </span>
+        <span class="card__body">
+          <span class="card__meta">${aiBadge}${metric}</span>
+          <span class="card__title">${esc(item.title)}</span>
+          <span class="card__desc">${esc(item.summary)}</span>
+          <span class="card__tags">${chips.map((t) => `<span class="card__tag">${esc(t)}</span>`).join("")}</span>
+          <span class="card__more">View detail ${photoBadge}</span>
+        </span>
+      </button>`;
+  }
+
+  function filtersHTML(list) {
+    const cats = ["All", ...[...new Set(list.map((p) => p.cat))]];
+    return cats.map((c, i) => {
+      const n = c === "All" ? list.length : list.filter((p) => p.cat === c).length;
+      return `<button class="filter" type="button" role="tab" data-cat="${esc(c)}" aria-selected="${i === 0}">${esc(c)}<span class="filter__n">${n}</span></button>`;
+    }).join("");
+  }
+
+  function render() {
+    $("#work-grid").innerHTML = PROJECTS.map((p, i) => cardHTML(p, i, "work")).join("");
+    $("#work-filters").innerHTML = filtersHTML(PROJECTS);
+    $("#beyond-grid").innerHTML = BEYOND.map((p, i) => cardHTML(p, i, "beyond")).join("");
+    $("#beyond-filters").innerHTML = filtersHTML(BEYOND);
+
+    const tl = (list) => list.map((t) => `
+      <li class="tl-item${t.now ? " tl-item--now" : ""} reveal">
+        <p class="tl-item__dates">${esc(t.dates)}</p>
+        <h4 class="tl-item__role">${esc(t.role)}</h4>
+        <p class="tl-item__org">${esc(t.org)}</p>
+        <ul class="tl-item__desc">${t.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+      </li>`).join("");
+
+    $("#timeline").innerHTML = tl(TIMELINE);
+    $("#timeline").setAttribute("data-stagger", "");
+    $("#education").innerHTML = tl(EDUCATION);
+    $("#education").setAttribute("data-stagger", "");
+    $("#exp-count").textContent = `${TIMELINE.length} roles`;
+
+    $("#stack-rail").innerHTML = STACK.map((g, i) => `
+      <button class="matrix__cat" type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">
+        ${esc(g.name)}<b>${g.items.length}</b>
+      </button>`).join("");
+    renderStack(0);
+
+    $("#marquee-track").innerHTML = [...MARQUEE, ...MARQUEE]
+      .map((m) => `<span class="marquee__item">${esc(m)}</span>`).join("");
+  }
+
+  function renderStack(idx) {
+    const g = STACK[idx];
+    $("#stack-panel").innerHTML = `<div class="matrix__grid">${g.items.map(([name, tier], i) => `
+      <div class="skill skill--${tier}" style="--i:${i}">
+        <span class="skill__name">${esc(name)}</span>
+        <span class="skill__meter" role="img" aria-label="${tier}"><i></i><i></i><i></i></span>
+      </div>`).join("")}</div>`;
+  }
+
+  function initStack() {
+    const rail = $("#stack-rail");
+    rail.addEventListener("click", (e) => {
+      const btn = e.target.closest(".matrix__cat");
+      if (!btn) return;
+      $$(".matrix__cat", rail).forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
+      renderStack(+btn.dataset.i);
+    });
+    /* arrow keys move between categories — standard tablist behaviour */
+    rail.addEventListener("keydown", (e) => {
+      const btns = $$(".matrix__cat", rail);
+      const cur = btns.indexOf(document.activeElement);
+      if (cur < 0) return;
+      const dir = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      const next = btns[(cur + dir + btns.length) % btns.length];
+      next.focus();
+      next.click();
+    });
+  }
+
+  /* ============================================================
+     GALLERY FILTERS — FLIP so surviving cards glide to new slots
+     ============================================================ */
+  function initFilters(filterId, gridId, emptyId) {
+    const bar = $(filterId), grid = $(gridId), empty = $(emptyId);
+
+    bar.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter");
+      if (!btn) return;
+      const cat = btn.dataset.cat;
+      $$(".filter", bar).forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
+
+      const cards = $$(".card", grid);
+      const first = new Map(cards.map((c) => [c, c.getBoundingClientRect()]));
+      const wasHidden = new Set(cards.filter((c) => c.classList.contains("is-hidden")));
+
+      let shown = 0;
+      cards.forEach((c) => {
+        const match = cat === "All" || c.dataset.cat === cat;
+        c.classList.toggle("is-hidden", !match);
+        if (match) shown++;
+      });
+      empty.hidden = shown > 0;
+
+      if (RM) return;
+      cards.forEach((c) => {
+        if (c.classList.contains("is-hidden")) return;
+        if (wasHidden.has(c)) { c.classList.remove("is-enter"); void c.offsetWidth; c.classList.add("is-enter"); return; }
+        const f = first.get(c), l = c.getBoundingClientRect();
+        const dx = f.left - l.left, dy = f.top - l.top;
+        if (!dx && !dy) return;
+        c.classList.add("is-flip");
+        c.style.transform = `translate(${dx}px, ${dy}px)`;
+        raf(() => { c.classList.remove("is-flip"); c.style.transform = ""; });
+      });
+    });
+  }
+
+  /* ============================================================
+     DETAIL OVERLAY — shared by Work and Beyond.
+     Uses the View Transitions API for a real shared-element morph
+     where supported, and a blur-scale enter everywhere else.
+     ============================================================ */
+  const detail = {
+    el: $("#detail"), body: $("#detail-body"), pos: $("#detail-pos"),
+    prev: $("#detail-prev"), next: $("#detail-next"),
+    list: [], index: 0, kind: "work", origin: null, lastFocus: null,
+  };
+
+  function detailHTML(item, kind) {
+    const gallery = kind === "beyond"
+      ? (item.photos.length
+        ? `<section>
+             <h4 class="detail__sub">Photos</h4>
+             <div class="detail__gallery">${item.photos.map((p, i) => `
+               <button class="detail__shot" type="button" data-photo="${i}">
+                 <img src="${esc(p.src)}" alt="${esc(p.cap || item.title)}" loading="lazy" />
+               </button>`).join("")}</div>
+           </section>`
+        : `<p class="detail__note">No photos attached yet. Drop images into <b>assets/beyond/</b> and list them in this entry's <b>photos</b> array in app.js &mdash; they will appear here in a lightbox.</p>`)
+      : "";
+
+    const tags = item.tech
+      ? `<section>
+           <h4 class="detail__sub">Built with</h4>
+           <div class="detail__tags">${item.tech.map((t) => `<span class="card__tag">${esc(t)}</span>`).join("")}</div>
+         </section>` : "";
+
+    const link = item.link
+      ? `<a class="btn btn--primary" href="${esc(item.link)}" target="_blank" rel="noopener">Visit the live system</a>` : "";
+
+    const aiLine = item.ai
+      ? `<span class="detail__ai">${esc(AI_LABEL[item.ai] || "AI")}</span>` : "";
+
+    return `
+      <div class="detail__hero" style="view-transition-name:detail-hero">
+        <span class="detail__abbr">${esc(item.abbr)}</span>
+        ${item.metric ? `<span class="detail__metric">${esc(item.metric)}</span>` : ""}
+      </div>
+      <header class="detail__head">
+        <p class="detail__meta"><span>${esc(item.cat)}</span><span>${esc(item.year)}</span>${aiLine}</p>
+        <h3 class="detail__title" id="detail-title">${esc(item.title)}</h3>
+        <p class="detail__role">${esc(item.role)}</p>
+      </header>
+      <div class="detail__body">
+        <p>${esc(item.summary)}</p>
+        <section>
+          <h4 class="detail__sub">${kind === "beyond" ? "What it involved" : "Highlights"}</h4>
+          <ul class="detail__list">${item.highlights.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>
+        </section>
+        ${tags}
+        ${gallery}
+        ${link}
+      </div>`;
+  }
+
+  function paintDetail() {
+    const item = detail.list[detail.index];
+    detail.body.innerHTML = detailHTML(item, detail.kind);
+    detail.body.scrollTop = 0;
+    detail.pos.textContent = `${String(detail.index + 1).padStart(2, "0")} / ${String(detail.list.length).padStart(2, "0")}`;
+    detail.prev.disabled = detail.index === 0;
+    detail.next.disabled = detail.index === detail.list.length - 1;
+  }
+
+  /* run a DOM update inside a shared-element view transition when available */
+  function withVT(originEl, fn) {
+    if (!document.startViewTransition || RM) { fn(); return; }
+    if (originEl) originEl.style.viewTransitionName = "detail-hero";
+    const t = document.startViewTransition(() => {
+      if (originEl) originEl.style.viewTransitionName = "";
+      fn();
+    });
+    t.finished.catch(() => {}).finally(() => { if (originEl) originEl.style.viewTransitionName = ""; });
+  }
+
+  function openDetail(kind, index, originCard) {
+    detail.kind = kind;
+    detail.list = kind === "work" ? PROJECTS : BEYOND;
+    detail.index = index;
+    detail.origin = originCard || null;
+    detail.lastFocus = document.activeElement;
+
+    const thumb = originCard ? $(".card__thumb", originCard) : null;
+    withVT(thumb, () => {
+      paintDetail();
+      detail.el.hidden = false;
+      document.body.classList.add("is-locked");
+    });
+    window.setTimeout(() => $(".detail__close").focus(), 60);
+  }
+
+  function closeDetail() {
+    const card = detail.origin;
+    const thumb = card ? $(".card__thumb", card) : null;
+    const hero = $(".detail__hero", detail.body);
+    if (hero && document.startViewTransition && !RM) hero.style.viewTransitionName = "detail-hero";
+
+    const run = () => {
+      detail.el.hidden = true;
+      detail.body.innerHTML = "";
+      document.body.classList.remove("is-locked");
+      if (thumb) thumb.style.viewTransitionName = "detail-hero";
+    };
+
+    if (!document.startViewTransition || RM) { run(); if (thumb) thumb.style.viewTransitionName = ""; }
+    else {
+      const t = document.startViewTransition(run);
+      t.finished.catch(() => {}).finally(() => { if (thumb) thumb.style.viewTransitionName = ""; });
+    }
+    if (detail.lastFocus) detail.lastFocus.focus();
+  }
+
+  function stepDetail(dir) {
+    const next = detail.index + dir;
+    if (next < 0 || next >= detail.list.length) return;
+    detail.index = next;
+    detail.origin = null;                 /* no origin card for keyboard stepping */
+    paintDetail();
+  }
+
+  function initDetail() {
+    $$(".gallery").forEach((grid) => {
+      grid.addEventListener("click", (e) => {
+        const card = e.target.closest(".card");
+        if (!card) return;
+        openDetail(card.dataset.kind, +card.dataset.i, card);
+      });
+    });
+
+    $$("[data-detail-close]").forEach((b) => b.addEventListener("click", closeDetail));
+    detail.prev.addEventListener("click", () => stepDetail(-1));
+    detail.next.addEventListener("click", () => stepDetail(1));
+
+    detail.body.addEventListener("click", (e) => {
+      const shot = e.target.closest("[data-photo]");
+      if (!shot) return;
+      openLightbox(detail.list[detail.index].photos, +shot.dataset.photo);
+    });
+  }
+
+  /* ============================================================
+     LIGHTBOX
+     ============================================================ */
+  const lb = { el: $("#lightbox"), fig: $("#lb-figure"), cap: $("#lb-cap"), img: null, photos: [], index: 0 };
+
+  function paintLightbox() {
+    const p = lb.photos[lb.index];
+    if (!lb.img) {
+      lb.img = document.createElement("img");
+      lb.img.decoding = "async";
+      lb.fig.insertBefore(lb.img, lb.cap);
+    }
+    lb.img.src = p.src;
+    lb.img.alt = p.cap || "";
+    lb.cap.textContent = `${p.cap || ""}  ${lb.index + 1} / ${lb.photos.length}`.trim();
+    $("#lb-prev").hidden = lb.photos.length < 2;
+    $("#lb-next").hidden = lb.photos.length < 2;
+  }
+
+  function openLightbox(photos, index) {
+    if (!photos || !photos.length) return;
+    lb.photos = photos;
+    lb.index = index;
+    paintLightbox();
+    lb.el.hidden = false;
+  }
+
+  function closeLightbox() { lb.el.hidden = true; }
+
+  function stepLightbox(dir) {
+    lb.index = (lb.index + dir + lb.photos.length) % lb.photos.length;
+    paintLightbox();
+  }
+
+  function initLightbox() {
+    $$("[data-lb-close]").forEach((b) => b.addEventListener("click", closeLightbox));
+    $("#lb-prev").addEventListener("click", () => stepLightbox(-1));
+    $("#lb-next").addEventListener("click", () => stepLightbox(1));
+  }
+
+  /* ============================================================
+     NAV — scrolled state, progress hairline, scrollspy, rail
+     ============================================================ */
+  const SECTIONS = ["about", "work", "stack", "experience", "beyond", "contact"];
+
   function initNav() {
     const nav = $("#nav");
     const progress = $("#progress");
-    $("#fab").hidden = false;            /* visibility is class-driven from here */
+    const fab = $("#fab");
+    const rail = $("#rail");
+    fab.hidden = false;
     let queued = false;
 
     function onScroll() {
       if (queued) return;
       queued = true;
-      window.requestAnimationFrame(() => {
+      raf(() => {
         queued = false;
         const y = window.scrollY;
         nav.classList.toggle("is-scrolled", y > 8);
         const max = document.documentElement.scrollHeight - window.innerHeight;
         progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-        const fab = $("#fab");
         fab.classList.toggle("is-visible", y > 600);
         fab.style.pointerEvents = y > 600 ? "auto" : "none";
+        rail.classList.toggle("is-visible", y > 300);
       });
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    /* scrollspy — the nav always tells you where you are (Jakob) */
     const links = $$("[data-spy]");
-    const byId = Object.fromEntries(links.map((l) => [l.getAttribute("href").slice(1), l]));
+    const rails = $$("[data-rail]");
     const spy = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
-        links.forEach((l) => l.classList.remove("is-active"));
-        const link = byId[e.target.id];
-        if (link) link.classList.add("is-active");
+        const id = e.target.id;
+        links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "#" + id));
+        rails.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "#" + id));
       });
     }, { rootMargin: "-40% 0px -55% 0px" });
-    ["about", "work", "stack", "experience", "contact"].forEach((id) => spy.observe(document.getElementById(id)));
+    SECTIONS.forEach((id) => spy.observe(document.getElementById(id)));
 
-    $("#fab").addEventListener("click", () => window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" }));
+    fab.addEventListener("click", () => window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" }));
 
-    /* mobile menu */
     const burger = $("#burger");
     const menu = $("#mobile-menu");
     function setMenu(open) {
       burger.setAttribute("aria-expanded", String(open));
       burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       menu.hidden = !open;
-      document.body.style.overflow = open ? "hidden" : "";
+      document.body.classList.toggle("is-locked", open);
     }
     burger.addEventListener("click", () => setMenu(menu.hidden));
     $$("a", menu).forEach((a) => a.addEventListener("click", () => setMenu(false)));
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !menu.hidden) setMenu(false);
-    });
-  }
-
-  /* ============================================================
-     REVEALS — enter = rise + focus (opacity/translate/blur only)
-     ============================================================ */
-  function initReveals() {
-    $$("[data-stagger]").forEach((group) => {
-      $$(".reveal", group).forEach((el, i) => el.style.setProperty("--i", i));
-    });
-    const els = $$(".reveal");
-    if (RM) { els.forEach((el) => el.classList.add("is-in")); return; }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("is-in");
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-    els.forEach((el) => io.observe(el));
   }
 
   /* ============================================================
      COUNTERS
      ============================================================ */
   function initCounters() {
-    const nums = $$("[data-count]");
-    const run = (el) => {
-      const target = +el.dataset.count;
-      const suffix = el.dataset.suffix || "";
-      if (RM) { el.textContent = target + suffix; return; }
-      const t0 = performance.now(), DUR = 950;
-      const tickFn = (now) => {
-        const t = Math.min((now - t0) / DUR, 1);
-        el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3))) + suffix;
-        if (t < 1) window.requestAnimationFrame(tickFn);
-      };
-      window.requestAnimationFrame(tickFn);
-    };
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
-        run(e.target);
-        io.unobserve(e.target);
+        const el = e.target;
+        io.unobserve(el);
+        const target = +el.dataset.count;
+        const suffix = el.dataset.suffix || "";
+        if (RM) { el.textContent = target + suffix; return; }
+        const t0 = performance.now(), DUR = 950;
+        const step = (now) => {
+          const t = Math.min((now - t0) / DUR, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3))) + suffix;
+          if (t < 1) raf(step);
+        };
+        raf(step);
       });
     }, { threshold: 0.6 });
-    nums.forEach((el) => io.observe(el));
+    $$("[data-count]").forEach((el) => io.observe(el));
   }
 
   /* ============================================================
-     TILT + SPOTLIGHT — desktop only, transform/opacity only
+     TILT + SPOTLIGHT + MAGNETS + CURSOR (desktop, motion allowed)
      ============================================================ */
-  function initTilt() {
+  function initPointerFX() {
     if (!FINE || RM) return;
-    $$(".card").forEach((card) => {
-      let raf = 0;
-      card.addEventListener("pointermove", (e) => {
-        if (raf) return;
-        raf = window.requestAnimationFrame(() => {
-          raf = 0;
-          const r = card.getBoundingClientRect();
+
+    $$(".gallery").forEach((grid) => {
+      let active = null, pending = 0;
+      grid.addEventListener("pointermove", (e) => {
+        const card = e.target.closest(".card");
+        if (!card) return;
+        active = card;
+        if (pending) return;
+        pending = raf(() => {
+          pending = 0;
+          if (!active) return;
+          const r = active.getBoundingClientRect();
           const px = (e.clientX - r.left) / r.width;
           const py = (e.clientY - r.top) / r.height;
-          card.style.transform = `rotateX(${(0.5 - py) * 6}deg) rotateY(${(px - 0.5) * 8}deg)`;
-          card.style.setProperty("--mx", `${px * 100}%`);
-          card.style.setProperty("--my", `${py * 100}%`);
+          active.style.transform = `rotateX(${(0.5 - py) * 6}deg) rotateY(${(px - 0.5) * 8}deg)`;
+          active.style.setProperty("--mx", `${px * 100}%`);
+          active.style.setProperty("--my", `${py * 100}%`);
         });
       });
-      card.addEventListener("pointerleave", () => {
-        window.cancelAnimationFrame(raf);
-        raf = 0;
-        card.style.transform = "";
+      grid.addEventListener("pointerout", (e) => {
+        const card = e.target.closest(".card");
+        if (card && !card.contains(e.relatedTarget)) { card.style.transform = ""; active = null; }
       });
     });
-  }
 
-  /* ============================================================
-     MAGNETIC BUTTONS — small pull, spring-back via CSS transition
-     ============================================================ */
-  function initMagnets() {
-    if (!FINE || RM) return;
     $$("[data-magnet]").forEach((el) => {
-      let down = false;
-      const apply = (dx, dy) => {
-        el.style.transform = `translate(${dx}px, ${dy}px) scale(${down ? 0.97 : 1})`;
-      };
       el.addEventListener("pointermove", (e) => {
         const r = el.getBoundingClientRect();
         const dx = (e.clientX - (r.left + r.width / 2)) * 0.18;
         const dy = (e.clientY - (r.top + r.height / 2)) * 0.22;
-        apply(Math.max(-10, Math.min(10, dx)), Math.max(-8, Math.min(8, dy)));
+        el.style.transform = `translate(${Math.max(-10, Math.min(10, dx))}px, ${Math.max(-8, Math.min(8, dy))}px)`;
       });
-      el.addEventListener("pointerdown", () => { down = true; el.style.transform += " scale(0.97)"; });
-      el.addEventListener("pointerup", () => { down = false; });
-      el.addEventListener("pointerleave", () => { down = false; el.style.transform = ""; });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
     });
-  }
 
-  /* ============================================================
-     CURSOR — dot + lagging ring
-     ============================================================ */
-  function initCursor() {
-    if (!FINE || RM) return;
     const root = $("#cursor");
     const dot = $(".cursor__dot", root);
     const ring = $(".cursor__ring", root);
-    let mx = -100, my = -100, rx = -100, ry = -100, active = false;
+    let mx = -100, my = -100, rx = -100, ry = -100, live = false;
 
     window.addEventListener("pointermove", (e) => {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-      if (!active) { active = true; loop(); }
+      if (!live) { live = true; loop(); }
     }, { passive: true });
 
     function loop() {
       rx += (mx - rx) * 0.16;
       ry += (my - ry) * 0.16;
       ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) scale(var(--cur-s))`;
-      window.requestAnimationFrame(loop);
+      raf(loop);
     }
 
     document.addEventListener("mouseover", (e) => {
@@ -484,8 +1245,7 @@
   }
 
   /* ============================================================
-     COMMAND PALETTE — Ctrl/⌘+K. Keyboard-initiated → opens
-     instantly, no animation. Tesler: it absorbs the nav.
+     COMMAND PALETTE — sections, projects, involvement, actions
      ============================================================ */
   function initPalette() {
     const overlay = $("#palette");
@@ -493,32 +1253,44 @@
     const list = $("#palette-list");
     let selected = 0, lastFocus = null, filtered = [];
 
-    /* 7 commands — Miller's Law */
-    const ACTIONS = [
-      { label: "Go to About", hint: "section", keywords: "about bio", run: () => goTo("#about") },
-      { label: "Go to Work", hint: "section", keywords: "projects work portfolio", run: () => goTo("#work") },
-      { label: "Go to Stack", hint: "section", keywords: "stack skills tools tech", run: () => goTo("#stack") },
-      { label: "Go to Experience", hint: "section", keywords: "experience timeline history", run: () => goTo("#experience") },
-      { label: "Go to Contact", hint: "section", keywords: "contact email hire", run: () => goTo("#contact") },
-      { label: "Copy email address", hint: "action", keywords: "copy email clipboard", run: copyEmail },
-      { label: "Email me", hint: "action", keywords: "email send message mail", run: () => { window.location.href = `mailto:${EMAIL}`; } },
-    ];
+    const goTo = (sel) => $(sel).scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" });
 
-    function goTo(sel) {
-      $(sel).scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" });
-    }
+    const ACTIONS = [
+      ...SECTIONS.map((id) => ({
+        label: `Go to ${id[0].toUpperCase()}${id.slice(1)}`, hint: "section",
+        keywords: id, run: () => goTo("#" + id),
+      })),
+      ...PROJECTS.map((p, i) => ({
+        label: p.title, hint: "project",
+        keywords: `${p.cat} ${(p.tech || []).join(" ")} project work`,
+        run: () => { goTo("#work"); window.setTimeout(() => openDetail("work", i, null), 420); },
+      })),
+      ...BEYOND.map((p, i) => ({
+        label: p.title, hint: "involvement",
+        keywords: `${p.cat} ${p.role} training seminar community award`,
+        run: () => { goTo("#beyond"); window.setTimeout(() => openDetail("beyond", i, null), 420); },
+      })),
+      { label: "Copy email address", hint: "action", keywords: "copy email clipboard contact", run: copyEmail },
+      { label: "Email me", hint: "action", keywords: "email send message mail contact", run: () => { window.location.href = `mailto:${EMAIL}`; } },
+      { label: "Download CV", hint: "action", keywords: "cv resume download pdf", run: () => { window.location.href = "assets/Rasty-Espartero-CV.pdf"; } },
+      { label: "Open GitHub", hint: "external", keywords: "github code repo", run: () => window.open("https://github.com/RastyFullStaxx", "_blank", "noopener") },
+      { label: "Open LinkedIn", hint: "external", keywords: "linkedin profile network", run: () => window.open("https://www.linkedin.com/in/rastyespartero/", "_blank", "noopener") },
+    ];
 
     function renderList(q = "") {
       const query = q.trim().toLowerCase();
       filtered = ACTIONS.filter((a) => !query || (a.label + " " + a.keywords).toLowerCase().includes(query));
       selected = 0;
-      list.innerHTML = filtered.length
-        ? filtered.map((a, i) => `
-          <li class="palette__item" id="cmd-${i}" role="option" aria-selected="${i === selected}">
-            <span>${a.label}</span><span class="palette__item-hint">${a.hint}</span>
-          </li>`).join("")
-        : `<li class="palette__empty">No matches. Try &ldquo;work&rdquo; or &ldquo;email&rdquo;.</li>`;
-      input.setAttribute("aria-activedescendant", filtered.length ? "cmd-0" : "");
+      if (!filtered.length) {
+        list.innerHTML = `<li class="palette__empty">No matches. Try &ldquo;laravel&rdquo;, &ldquo;award&rdquo; or &ldquo;email&rdquo;.</li>`;
+        input.setAttribute("aria-activedescendant", "");
+        return;
+      }
+      list.innerHTML = filtered.map((a, i) => `
+        <li class="palette__item" id="cmd-${i}" role="option" aria-selected="${i === 0}">
+          <span>${esc(a.label)}</span><span class="palette__item-hint">${a.hint}</span>
+        </li>`).join("");
+      input.setAttribute("aria-activedescendant", "cmd-0");
       $$(".palette__item", list).forEach((li, i) => {
         li.addEventListener("mouseenter", () => select(i));
         li.addEventListener("click", () => runAction(i));
@@ -543,38 +1315,59 @@
     function open() {
       lastFocus = document.activeElement;
       overlay.hidden = false;
-      document.body.style.overflow = "hidden";
+      document.body.classList.add("is-locked");
       input.value = "";
       renderList();
       input.focus();
     }
     function close() {
       overlay.hidden = true;
-      document.body.style.overflow = "";
+      document.body.classList.remove("is-locked");
       if (lastFocus) lastFocus.focus();
     }
 
+    input.addEventListener("input", () => renderList(input.value));
+    $("[data-close]", overlay).addEventListener("click", close);
+    $("#cmdk-hint").addEventListener("click", open);
+
+    /* one keyboard authority for every layer, innermost first */
     window.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         overlay.hidden ? open() : close();
         return;
       }
-      if (overlay.hidden) return;
-      if (e.key === "Escape") { e.preventDefault(); close(); }
-      else if (e.key === "ArrowDown") { e.preventDefault(); select(Math.min(selected + 1, filtered.length - 1)); }
-      else if (e.key === "ArrowUp") { e.preventDefault(); select(Math.max(selected - 1, 0)); }
-      else if (e.key === "Enter") { e.preventDefault(); runAction(selected); }
-      else if (e.key === "Tab") e.preventDefault();      /* focus stays in the palette */
-    });
 
-    input.addEventListener("input", () => renderList(input.value));
-    $("[data-close]", overlay).addEventListener("click", close);
-    $("#cmdk-hint").addEventListener("click", open);
+      if (!lb.el.hidden) {
+        if (e.key === "Escape") { e.preventDefault(); closeLightbox(); }
+        else if (e.key === "ArrowRight") { e.preventDefault(); stepLightbox(1); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); stepLightbox(-1); }
+        return;
+      }
+
+      if (!overlay.hidden) {
+        if (e.key === "Escape") { e.preventDefault(); close(); }
+        else if (e.key === "ArrowDown") { e.preventDefault(); select(Math.min(selected + 1, filtered.length - 1)); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); select(Math.max(selected - 1, 0)); }
+        else if (e.key === "Enter") { e.preventDefault(); runAction(selected); }
+        else if (e.key === "Tab") e.preventDefault();
+        return;
+      }
+
+      if (!detail.el.hidden) {
+        if (e.key === "Escape") { e.preventDefault(); closeDetail(); }
+        else if (e.key === "ArrowRight") { e.preventDefault(); stepDetail(1); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); stepDetail(-1); }
+        return;
+      }
+
+      const menu = $("#mobile-menu");
+      if (e.key === "Escape" && !menu.hidden) $("#burger").click();
+    });
   }
 
   /* ============================================================
-     TOAST + COPY — Tesler: one click does the whole job
+     TOAST + COPY
      ============================================================ */
   let toastTimer = 0;
   function showToast(msg) {
@@ -597,35 +1390,39 @@
       ta.style.opacity = "0";
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand("copy") ? done() : fail(); }
-      catch { fail(); }
+      try { document.execCommand("copy") ? done() : fail(); } catch { fail(); }
       ta.remove();
     }
   }
 
-  /* ============================================================
-     HUD CLOCK
-     ============================================================ */
   function initClock() {
     const el = $("#clock");
     const fmt = new Intl.DateTimeFormat([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-    const update = () => { el.textContent = `LOCAL ${fmt.format(new Date())}`; };
+    const update = () => { el.textContent = fmt.format(new Date()); };
     update();
     window.setInterval(update, 1000);
   }
 
   /* ============================================================
-     BOOT
+     BOOT ORDER
      ============================================================ */
   render();
+  prepareText();
   initVortex();
   initNav();
-  initReveals();
-  initCounters();
-  initTilt();
-  initMagnets();
-  initCursor();
+  initStack();
+  initFilters("#work-filters", "#work-grid", "#work-empty");
+  initFilters("#beyond-filters", "#beyond-grid", "#beyond-empty");
+  initDetail();
+  initLightbox();
+  initPointerFX();
   initPalette();
   initClock();
   $("#copy-email").addEventListener("click", copyEmail);
+
+  /* reveals only start once the shutter is open, so nothing plays unseen */
+  boot().then(() => {
+    initReveals();
+    initCounters();
+  });
 })();
