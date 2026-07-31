@@ -66,7 +66,7 @@
         "Readiness is derived from evidence and approvals rather than manually asserted, and a pre-authorisation state machine blocks the Planning → On Treatment transition until it clears.",
         "Built to WCAG 2.1 AA on Next.js 16 App Router, React 19 and Prisma, with write-through persistence that survives restart.",
       ],
-      tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"], link: "https://github.com/RastyFullStaxx/CureRays-CRMS",
+      tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"], link: "",
     },
     {
       abbr: "AE", title: "AgilaEye — Explainable AI-Video Detection",
