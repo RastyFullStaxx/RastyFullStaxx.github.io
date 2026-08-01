@@ -116,8 +116,9 @@
         </div>
 
         <div class="hero__content">
-          <p class="hero__eyebrow" data-reveal="type">// software engr | qula founder | ai swe cs+automations, aws</p>
+          <p class="hero__eyebrow" data-reveal="type">// software engr | ai swe cs+automations, aws | qula founder </p>
           <h1 class="hero__title">Hi! I am <span class="grad-text">Rasty</span></h1>
+          <p class="hero__tagline" data-reveal="words">let&rsquo;s build your dream.</p>
         </div>
 
         <a class="hero__scroll" href="#about" aria-label="Scroll to about">
@@ -209,6 +210,7 @@
       <div class="filters" id="work-filters" role="tablist" aria-label="Filter work"></div>
       <div class="gallery" id="work-grid"></div>
       <p class="gallery__empty" id="work-empty" hidden>No projects in this category.</p>
+      <button class="showmore" id="work-more" type="button" aria-expanded="false" aria-controls="work-grid" data-cursor hidden></button>
     </section>
 
     <!-- ============ STACK — every group visible, counts drawn from the work ============ -->
@@ -234,14 +236,24 @@
           <h3>Professional</h3>
           <span class="track__count" id="exp-count"></span>
         </div>
-        <ol class="timeline" id="timeline"></ol>
+        <div class="tline">
+          <svg class="tline__svg" aria-hidden="true" focusable="false">
+            <path class="tline__track" /><path class="tline__draw" />
+          </svg>
+          <ol class="timeline" id="timeline"></ol>
+        </div>
       </div>
 
       <div class="track">
         <div class="track__head">
           <h3>Education</h3>
         </div>
-        <ol class="timeline timeline--edu" id="education"></ol>
+        <div class="tline">
+          <svg class="tline__svg" aria-hidden="true" focusable="false">
+            <path class="tline__track" /><path class="tline__draw" />
+          </svg>
+          <ol class="timeline timeline--edu" id="education"></ol>
+        </div>
       </div>
     </section>
 
@@ -253,6 +265,7 @@
       <div class="filters" id="beyond-filters" role="tablist" aria-label="Filter involvement"></div>
       <div class="gallery gallery--beyond" id="beyond-grid"></div>
       <p class="gallery__empty" id="beyond-empty" hidden>No entries in this category.</p>
+      <button class="showmore" id="beyond-more" type="button" aria-expanded="false" aria-controls="beyond-grid" data-cursor hidden></button>
     </section>
 
     <!-- ============ CONTACT — Fitts: one huge target ============ -->
@@ -269,6 +282,7 @@
       <div class="contact__socials reveal">
         <a href="https://github.com/RastyFullStaxx" rel="noopener" target="_blank" data-cursor>GitHub</a>
         <a href="https://www.linkedin.com/in/rastyespartero/" rel="noopener" target="_blank" data-cursor>LinkedIn</a>
+        <a href="https://qulasystems.pages.dev" rel="noopener" target="_blank" data-cursor>Qula Systems</a>
         <a href="tel:+639672132609" data-cursor>+63 967 213 2609</a>
         <a href="assets/Rasty-Espartero-CV.pdf" download data-cursor>Resume</a>
       </div>

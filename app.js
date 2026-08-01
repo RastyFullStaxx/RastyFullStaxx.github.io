@@ -533,7 +533,7 @@
     },
     {
       abbr: "AI", title: "Meta & Microsoft AI Programs",
-      cat: "Training", year: "2026", role: "Selected Participant",
+      cat: "Training", year: "2026", role: "Selected Trainee",
       summary: "Selected for AI training programs run by Meta and Microsoft, covering applied AI practice alongside my engineering work.",
       highlights: [
         "Selected on merit for both programs.",
@@ -644,6 +644,14 @@
   ];
 
   const TIMELINE = [
+    {
+      dates: "2026 — NOW", role: "Founder & Project Manager", org: "Qula Systems", now: true,
+      link: "https://qulasystems.pages.dev",
+      points: [
+        "Founded the team in June 2026 and own delivery end to end — scope, schedule and client communication.",
+        "Coordinate engineering and design across builds, from kickoff through release.",
+      ],
+    },
     {
       dates: "2025", role: "DevOps Intern", org: "Canadian Technology Company Incorporated (CGI)", now: false,
       points: [
@@ -1264,12 +1272,20 @@
     $("#beyond-grid").innerHTML = BEYOND.map((p, i) => cardHTML(p, i, "beyond")).join("");
     $("#beyond-filters").innerHTML = filtersHTML(BEYOND);
 
-    const tl = (list) => list.map((t) => `
-      <li class="tl-item${t.now ? " tl-item--now" : ""} reveal">
-        <p class="tl-item__dates">${esc(t.dates)}${t.gwa ? `<span class="tl-item__gwa">${esc(t.gwa)}</span>` : ""}</p>
-        <h4 class="tl-item__role">${esc(t.role)}</h4>
-        <p class="tl-item__org">${esc(t.org)}</p>
-        <ul class="tl-item__desc">${t.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+    /* Entries alternate sides so the SVG spine has something to snake between.
+       initTimeline() reads each .tl-item__node to lay the path out, so the node
+       must stay a real element — a ::before pseudo cannot be measured. */
+    const tl = (list) => list.map((t, i) => `
+      <li class="tl-item tl-item--${i % 2 ? "r" : "l"}${t.now ? " tl-item--now" : ""} reveal">
+        <span class="tl-item__node" aria-hidden="true"></span>
+        <div class="tl-item__card">
+          <p class="tl-item__dates">${esc(t.dates)}${t.gwa ? `<span class="tl-item__gwa">${esc(t.gwa)}</span>` : ""}</p>
+          <h4 class="tl-item__role" data-reveal="words">${esc(t.role)}</h4>
+          <p class="tl-item__org">${t.link
+            ? `<a href="${esc(t.link)}" rel="noopener" target="_blank" data-cursor>${esc(t.org)}<span aria-hidden="true"> &#8599;</span></a>`
+            : esc(t.org)}</p>
+          <ul class="tl-item__desc" data-reveal="words">${t.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+        </div>
       </li>`).join("");
 
     $("#timeline").innerHTML = tl(TIMELINE);
@@ -1334,28 +1350,39 @@
   /* ============================================================
      GALLERY FILTERS — FLIP so surviving cards glide to new slots
      ============================================================ */
-  function initFilters(filterId, gridId, emptyId) {
-    const bar = $(filterId), grid = $(gridId), empty = $(emptyId);
+  /* Both galleries open collapsed so the page stays scannable — 34 project
+     cards is a long scroll before anyone reaches the timeline. `limit` is the
+     number of cards shown before the reveal button; set it to 3 for a single
+     row, or raise it to show more up front. */
+  function initFilters(filterId, gridId, emptyId, moreId, noun, limit) {
+    const bar = $(filterId), grid = $(gridId), empty = $(emptyId), more = $(moreId);
+    const state = { cat: "All", expanded: false };
 
-    bar.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter");
-      if (!btn) return;
-      const cat = btn.dataset.cat;
-      $$(".filter", bar).forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
-
+    function apply(animate) {
       const cards = $$(".card", grid);
-      const first = new Map(cards.map((c) => [c, c.getBoundingClientRect()]));
+      const first = animate ? new Map(cards.map((c) => [c, c.getBoundingClientRect()])) : null;
       const wasHidden = new Set(cards.filter((c) => c.classList.contains("is-hidden")));
 
-      let shown = 0;
+      let matched = 0;
       cards.forEach((c) => {
-        const match = cat === "All" || c.dataset.cat === cat;
-        c.classList.toggle("is-hidden", !match);
-        if (match) shown++;
+        const match = state.cat === "All" || c.dataset.cat === state.cat;
+        let visible = match;
+        if (match) {
+          matched++;
+          if (!state.expanded && matched > limit) visible = false;
+        }
+        c.classList.toggle("is-hidden", !visible);
       });
-      empty.hidden = shown > 0;
 
-      if (RM) return;
+      empty.hidden = matched > 0;
+      const clipped = matched > limit;
+      more.hidden = !clipped;
+      if (clipped) {
+        more.textContent = state.expanded ? "Show fewer" : `Show all ${matched} ${noun}`;
+        more.setAttribute("aria-expanded", String(state.expanded));
+      }
+
+      if (!animate || RM) return;
       cards.forEach((c) => {
         if (c.classList.contains("is-hidden")) return;
         if (wasHidden.has(c)) { c.classList.remove("is-enter"); void c.offsetWidth; c.classList.add("is-enter"); return; }
@@ -1366,7 +1393,28 @@
         c.style.transform = `translate(${dx}px, ${dy}px)`;
         raf(() => { c.classList.remove("is-flip"); c.style.transform = ""; });
       });
+    }
+
+    bar.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter");
+      if (!btn) return;
+      $$(".filter", bar).forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
+      state.cat = btn.dataset.cat;
+      state.expanded = false;          /* a new filter starts collapsed again */
+      apply(true);
     });
+
+    more.addEventListener("click", () => {
+      state.expanded = !state.expanded;
+      apply(true);
+      /* collapsing from far down the list would otherwise strand the reader
+         below the section they were reading */
+      if (!state.expanded) {
+        grid.closest("section").scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" });
+      }
+    });
+
+    apply(false);
   }
 
   /* ============================================================
@@ -1560,6 +1608,97 @@
   /* ============================================================
      NAV — scrolled state, progress hairline, scrollspy, rail
      ============================================================ */
+  /* ============================================================
+     TIMELINE SPINE
+     A curved SVG path threaded through the entry nodes, drawn as you
+     scroll. Two copies of the same path: a faint one showing where the
+     route goes, and a bright one revealed by shrinking its dash offset.
+     ============================================================ */
+  function initTimeline(root) {
+    const svg = $(".tline__svg", root);
+    const track = $(".tline__track", root);
+    const draw = $(".tline__draw", root);
+    const nodes = $$(".tl-item__node", root);
+    if (nodes.length < 2) return;
+
+    /* Distance along the path at which each node sits, so a node lights up
+       exactly when the drawn line reaches it rather than a guess from its
+       vertical position — the curves make the two diverge. */
+    const marks = [];
+    let len = 0;
+
+    function build() {
+      /* offsetLeft/offsetTop, not getBoundingClientRect: entries carry a
+         translateY reveal transform, and rects would bake it into the path. */
+      const pts = nodes.map((n) => {
+        const li = n.parentElement;
+        return { x: li.offsetLeft + n.offsetLeft, y: li.offsetTop + n.offsetTop };
+      });
+
+      const segs = pts.map((p, i) => {
+        if (!i) return `M${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+        const q = pts[i - 1];
+        const my = ((q.y + p.y) / 2).toFixed(1);
+        /* Vertical tangents at both ends: consecutive segments meet smoothly,
+           so the whole spine reads as one continuous snake. */
+        return `C${q.x.toFixed(1)},${my} ${p.x.toFixed(1)},${my} ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+      });
+
+      const d = segs.join("");
+      track.setAttribute("d", d);
+      draw.setAttribute("d", d);
+
+      marks.length = 0;
+      for (let i = 0; i < segs.length; i++) {
+        track.setAttribute("d", segs.slice(0, i + 1).join(""));
+        marks.push(track.getTotalLength());
+      }
+      track.setAttribute("d", d);
+
+      len = marks[marks.length - 1];
+      draw.style.strokeDasharray = String(len);
+      svg.style.opacity = "1";
+      paint();
+    }
+
+    function paint() {
+      if (RM) {
+        draw.style.strokeDashoffset = "0";
+        nodes.forEach((n) => n.classList.add("is-on"));
+        return;
+      }
+      const r = root.getBoundingClientRect();
+      const vh = window.innerHeight;
+      /* Starts drawing when the block's top passes 82% of the viewport and
+         finishes a little before its bottom leaves, so the last node lights
+         up while it is still on screen. */
+      const p = Math.max(0, Math.min(1, (vh * 0.82 - r.top) / (r.height + vh * 0.42)));
+      const drawn = len * p;
+      draw.style.strokeDashoffset = String(len - drawn);
+      nodes.forEach((n, i) => n.classList.toggle("is-on", drawn >= marks[i] - 2));
+    }
+
+    let queued = false;
+    function onScroll() {
+      if (queued) return;
+      queued = true;
+      raf(() => { queued = false; paint(); });
+    }
+
+    build();
+    /* The display and mono faces load async — when they swap in, every entry
+       reflows and the path built against fallback metrics no longer meets its
+       nodes. The observer below catches it a frame later, but rebuilding on
+       fonts.ready avoids showing a visibly wrong path in between. */
+    if (document.fonts) document.fonts.ready.then(build);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    /* Entries reflow at every breakpoint and when fonts settle; the path has
+       to be rebuilt from the new node positions, not just repainted. Runs
+       straight from the callback — it already fires after layout, and the
+       SVG is absolutely positioned so redrawing it cannot resize the root. */
+    new ResizeObserver(build).observe(root);
+  }
+
   const SECTIONS = ["about", "work", "stack", "experience", "beyond", "contact"];
 
   function initNav() {
@@ -1895,6 +2034,7 @@
       { label: "Download CV", hint: "action", keywords: "cv resume download pdf", run: () => { window.location.href = "assets/Rasty-Espartero-CV.pdf"; } },
       { label: "Open GitHub", hint: "external", keywords: "github code repo", run: () => window.open("https://github.com/RastyFullStaxx", "_blank", "noopener") },
       { label: "Open LinkedIn", hint: "external", keywords: "linkedin profile network", run: () => window.open("https://www.linkedin.com/in/rastyespartero/", "_blank", "noopener") },
+      { label: "Open Qula Systems", hint: "external", keywords: "qula systems team company founder", run: () => window.open("https://qulasystems.pages.dev", "_blank", "noopener") },
     ];
 
     function renderList(q = "") {
@@ -2030,8 +2170,11 @@
   prepareText();
   initVortex();
   initNav();
-  initFilters("#work-filters", "#work-grid", "#work-empty");
-  initFilters("#beyond-filters", "#beyond-grid", "#beyond-empty");
+  /* 5 fills two tidy rows because the featured tile occupies two columns; 6 does
+     the same for Beyond, which has no wide card */
+  initFilters("#work-filters", "#work-grid", "#work-empty", "#work-more", "projects", 5);
+  initFilters("#beyond-filters", "#beyond-grid", "#beyond-empty", "#beyond-more", "entries", 6);
+  $$(".tline").forEach(initTimeline);
   initDetail();
   initLightbox();
   initPointerFX();

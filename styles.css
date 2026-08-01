@@ -25,6 +25,14 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
   --nav-h: 64px;
+
+  /* Angular corner scale. Deliberately tight — pill radii and big soft
+     corners are the default look of generated UI, so everything here is a
+     square with its edge taken off rather than a rounded shape. */
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r-md: 7px;
+  --r-lg: 10px;
 }
 
 /* If you own the Vermica license, drop the file next to this css and
@@ -77,7 +85,7 @@ kbd {
   padding: 0.2em 0.5em;
   border: 1px solid var(--line);
   border-bottom-width: 2px;
-  border-radius: 6px;
+  border-radius: var(--r-xs);
   background: rgba(6, 32, 69, 0.6);
   color: var(--muted);
 }
@@ -92,7 +100,7 @@ kbd {
   padding: 10px 18px;
   background: var(--navy);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   font-family: var(--font-mono);
   font-size: 0.8rem;
   transition: top 0.2s var(--ease-out);
@@ -220,7 +228,7 @@ kbd {
 .nav__links { display: flex; gap: 2px; }
 .nav__links a {
   padding: 10px 13px;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--muted);
@@ -237,7 +245,7 @@ kbd {
   padding: 8px 12px;
   background: var(--glass);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   color: var(--muted);
   font-size: 0.85rem;
   cursor: pointer;
@@ -288,7 +296,7 @@ kbd {
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 600;
-  border-radius: 14px;
+  border-radius: var(--r-md);
   transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
 .menu a:hover { background: rgba(79, 195, 247, 0.08); color: var(--cyan); }
@@ -348,7 +356,7 @@ kbd {
   height: calc(100svh - 24px);
   min-height: 540px;
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--bg);
 }
@@ -394,6 +402,19 @@ kbd {
   line-height: 1.04;
   letter-spacing: -0.015em;
   word-spacing: 0.14em;
+  text-wrap: balance;
+}
+
+/* Mono, like the eyebrow above the title — the pair brackets the display
+   headline symmetrically. Same tracking as the eyebrow but set larger and
+   left lowercase, so it reads as a closing line rather than a second label. */
+.hero__tagline {
+  margin-top: 18px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.88rem, 1.5vw, 1.08rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--muted);
   text-wrap: balance;
 }
 
@@ -447,7 +468,7 @@ kbd {
   place-items: center;
   background: var(--glass);
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: var(--r-md);
   color: var(--muted);
   cursor: pointer;
   transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
@@ -466,7 +487,7 @@ kbd {
   justify-content: center;
   gap: 9px;
   padding: 14px 26px;
-  border-radius: 14px;
+  border-radius: var(--r-md);
   border: 1px solid transparent;
   font-size: 0.98rem;
   font-weight: 700;
@@ -486,7 +507,7 @@ kbd {
   -webkit-backdrop-filter: blur(8px);
 }
 .btn--ghost:hover { border-color: var(--line-2); }
-.btn--lg { padding: 18px 32px; font-size: 1.05rem; border-radius: 16px; }
+.btn--lg { padding: 18px 32px; font-size: 1.05rem; border-radius: var(--r-md); }
 
 /* ============================================================
    MARQUEE
@@ -559,7 +580,7 @@ kbd {
 .portrait { display: grid; grid-template-rows: 1fr auto; gap: 16px; }
 .portrait__frame {
   position: relative;
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   border: 1px solid var(--line-2);
   background: var(--navy);
@@ -621,7 +642,7 @@ kbd {
   gap: 3px;
   padding: 14px 16px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--r-md);
   background: var(--glass);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -644,7 +665,7 @@ kbd {
   padding: 18px 20px;
   background: var(--glass);
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-md);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
@@ -671,7 +692,7 @@ kbd {
   margin-top: 46px;
   padding: 24px 26px 20px;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -755,7 +776,7 @@ kbd {
   z-index: 5;
   transform: translate(-50%, -100%);
   padding: 7px 11px;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line-2);
   background: rgba(3, 11, 26, 0.95);
   font-family: var(--font-mono);
@@ -772,7 +793,7 @@ kbd {
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
 .filter {
   padding: 9px 16px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line);
   background: var(--glass);
   color: var(--muted);
@@ -791,6 +812,26 @@ kbd {
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; perspective: 1400px; }
 .gallery__empty { color: var(--muted); padding: 30px 0; }
 
+.showmore {
+  display: block;
+  margin: 24px auto 0;
+  padding: 13px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out),
+              background-color 0.2s var(--ease-out);
+}
+.showmore:hover { color: var(--ice); border-color: var(--line-2); background: rgba(79, 195, 247, 0.09); }
+
 .card {
   --mx: 50%;
   --my: 50%;
@@ -799,7 +840,7 @@ kbd {
   flex-direction: column;
   text-align: left;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -859,7 +900,7 @@ kbd {
   top: 12px;
   left: 12px;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   background: rgba(3, 11, 26, 0.6);
   border: 1px solid var(--line);
   font-family: var(--font-mono);
@@ -912,7 +953,7 @@ kbd {
   align-items: center;
   gap: 5px;
   padding: 4px 10px 4px 8px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   border: 1px solid rgba(127, 219, 255, 0.4);
   background: rgba(79, 195, 247, 0.1);
   font-family: var(--font-mono);
@@ -948,7 +989,7 @@ kbd {
   letter-spacing: 0.07em;
   padding: 4px 9px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   color: var(--dim);
 }
 .card__more {
@@ -991,7 +1032,7 @@ kbd {
 .sgroup {
   padding: 20px 22px 22px;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1026,7 +1067,7 @@ kbd {
   align-items: center;
   gap: 7px;
   padding: 6px 11px 6px 9px;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line);
   background: rgba(6, 32, 69, 0.5);
   font-size: 0.86rem;
@@ -1081,32 +1122,64 @@ kbd {
 }
 .track__count { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); }
 
-.timeline { list-style: none; display: grid; }
+/* Entries sit either side of centre and a curved SVG spine snakes between
+   them, drawn on scroll by initTimeline(). The path is generated from the
+   real node positions, so this layout is free to change — only the node
+   offsets below decide how wide the snake swings. */
+.tline { position: relative; }
+.tline__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0; /* until initTimeline() has a path to show */
+}
+.tline__track { fill: none; stroke: var(--line); stroke-width: 2; }
+.tline__draw {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 7px rgba(79, 195, 247, 0.55));
+}
+
+.timeline { list-style: none; display: grid; gap: 40px; }
 .tl-item {
   position: relative;
-  padding: 0 0 34px 32px;
-  border-left: 1px solid var(--line);
-  margin-left: 6px;
+  display: grid;
+  grid-template-columns: 36% 28% 36%;
+  align-items: center;
 }
-.tl-item:last-child { padding-bottom: 4px; border-left-color: transparent; }
-.tl-item::before {
-  content: "";
+.tl-item--l .tl-item__card { grid-column: 1; text-align: right; }
+.tl-item--l .tl-item__card > * { margin-left: auto; }
+.tl-item--r .tl-item__card { grid-column: 3; }
+
+/* Nodes are always centred on their `left`/`top` by the same transform, so
+   initTimeline() can treat offsetLeft/offsetTop as the exact path point. */
+.tl-item__node {
   position: absolute;
-  left: -6.5px;
-  top: 5px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%; /* keep: this is a node on a line, not a container */
   background: var(--bg);
-  border: 2px solid var(--cyan);
-  box-shadow: 0 0 12px rgba(79, 195, 247, 0.45);
+  border: 2px solid var(--line-2);
+  z-index: 1;
+  transition: border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out),
+    background-color 0.4s var(--ease-out);
 }
-.tl-item--now::before { background: var(--cyan); }
+.tl-item--l .tl-item__node { left: 42%; }
+.tl-item--r .tl-item__node { left: 58%; }
+.tl-item__node.is-on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(79, 195, 247, 0.55); }
+.tl-item--now .tl-item__node.is-on { background: var(--cyan); }
+
 .tl-item__dates { font-family: var(--font-mono); font-size: 0.71rem; letter-spacing: 0.14em; color: var(--cyan); }
 .tl-item__gwa {
   margin-left: 12px;
   padding: 2px 9px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line);
   background: rgba(6, 32, 69, 0.6);
   color: var(--sky);
@@ -1114,8 +1187,24 @@ kbd {
 }
 .tl-item__role { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin-top: 5px; }
 .tl-item__org { color: var(--muted); font-size: 0.92rem; }
-.tl-item__desc { color: var(--dim); font-size: 0.93rem; max-width: 62ch; margin-top: 8px; }
-.tl-item__desc li { margin-left: 18px; }
+.tl-item__org a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.tl-item__org a:hover { color: var(--ice); border-bottom-color: var(--cyan); }
+/* No bullet markers: they read backwards on the right-aligned side, and the
+   lines are short enough to scan as a stack without them. */
+.tl-item__desc { color: var(--dim); font-size: 0.93rem; max-width: 46ch; margin-top: 8px; }
+.tl-item__desc li + li { margin-top: 5px; }
+
+@media (max-width: 900px) {
+  /* One column with the spine down the left — the path collapses to a
+     straight line on its own once every node shares an x. */
+  .tl-item { grid-template-columns: 1fr; padding-left: 32px; }
+  .tl-item--l .tl-item__card,
+  .tl-item--r .tl-item__card { grid-column: 1; text-align: left; }
+  .tl-item--l .tl-item__card > * { margin-left: 0; }
+  .tl-item--l .tl-item__node,
+  .tl-item--r .tl-item__node { left: 7px; top: 12px; }
+  .tl-item__desc { max-width: none; }
+}
 
 /* ============================================================
    DETAIL OVERLAY
@@ -1141,7 +1230,7 @@ kbd {
   flex-direction: column;
   background: rgba(6, 32, 69, 0.9);
   border: 1px solid var(--line-2);
-  border-radius: 22px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
@@ -1161,7 +1250,7 @@ kbd {
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: var(--r-md);
   background: rgba(3, 11, 26, 0.7);
   color: var(--ice);
   cursor: pointer;
@@ -1205,7 +1294,7 @@ kbd {
   right: 18px;
   bottom: 14px;
   padding: 5px 12px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line);
   background: rgba(3, 11, 26, 0.6);
   font-family: var(--font-mono);
@@ -1218,7 +1307,7 @@ kbd {
 .detail__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
 .detail__ai {
   padding: 3px 10px;
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   border: 1px solid rgba(127, 219, 255, 0.4);
   background: rgba(79, 195, 247, 0.1);
   color: var(--sky);
@@ -1255,7 +1344,7 @@ kbd {
 .detail__shot {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: 12px;
+  border-radius: var(--r-md);
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--navy);
@@ -1269,7 +1358,7 @@ kbd {
 .detail__note {
   padding: 16px 18px;
   border: 1px dashed var(--line);
-  border-radius: 14px;
+  border-radius: var(--r-md);
   font-family: var(--font-mono);
   font-size: 0.76rem;
   line-height: 1.7;
@@ -1291,7 +1380,7 @@ kbd {
   gap: 7px;
   padding: 9px 14px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   background: none;
   color: var(--muted);
   font-size: 0.86rem;
@@ -1315,7 +1404,7 @@ kbd {
   gap: 12px;
   animation: detailIn 0.36s var(--ease-out) both;
 }
-.lightbox__figure img { max-height: 78vh; width: auto; border-radius: 14px; border: 1px solid var(--line-2); }
+.lightbox__figure img { max-height: 78vh; width: auto; border-radius: var(--r-md); border: 1px solid var(--line-2); }
 .lightbox__figure figcaption { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; color: var(--muted); text-align: center; }
 .lightbox__close, .lightbox__step {
   position: absolute;
@@ -1325,7 +1414,7 @@ kbd {
   width: 48px;
   height: 48px;
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: var(--r-md);
   background: rgba(6, 32, 69, 0.7);
   color: var(--ice);
   cursor: pointer;
@@ -1369,7 +1458,7 @@ kbd {
   height: 50px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border-radius: var(--r-md);
   background: var(--glass-2);
   border: 1px solid var(--line);
   color: var(--ice);
@@ -1395,7 +1484,7 @@ kbd {
   width: calc(100% - 32px);
   background: rgba(6, 32, 69, 0.88);
   border: 1px solid var(--line-2);
-  border-radius: 18px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -1420,7 +1509,7 @@ kbd {
   justify-content: space-between;
   gap: 14px;
   padding: 11px 14px;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   color: var(--muted);
   cursor: pointer;
 }
@@ -1440,7 +1529,7 @@ kbd {
   padding: 12px 22px;
   background: rgba(6, 32, 69, 0.94);
   border: 1px solid var(--line-2);
-  border-radius: 12px;
+  border-radius: var(--r-md);
   font-size: 0.9rem;
   font-weight: 500;
   transform: translate(-50%, 16px);
@@ -1457,7 +1546,7 @@ kbd {
 .cursor { display: none; }
 @media (pointer: fine) {
   .cursor { display: block; position: fixed; inset: 0; z-index: 400; pointer-events: none; }
-  .cursor__dot, .cursor__ring { position: absolute; top: 0; left: 0; border-radius: 50%; transform: translate(-100px, -100px); }
+  .cursor__dot, .cursor__ring { position: absolute; top: 0; left: 0; border-radius: 50%; /* keep: this is a cursor */ transform: translate(-100px, -100px); }
   .cursor__dot { width: 6px; height: 6px; background: var(--cyan); }
   .cursor__ring { width: 34px; height: 34px; border: 1.5px solid rgba(79, 195, 247, 0.5); transition: --cur-s 0.25s var(--ease-out), border-color 0.25s var(--ease-out); }
   .cursor.is-hover .cursor__ring { --cur-s: 1.55; border-color: rgba(79, 195, 247, 0.9); }
@@ -1536,7 +1625,7 @@ kbd {
   .filter { flex: 0 0 auto; }
   .section { padding-top: 84px; }
   .hero { padding: 8px; }
-  .hero__stage { height: calc(100svh - 16px); border-radius: 18px; }
+  .hero__stage { height: calc(100svh - 16px); border-radius: var(--r-lg); }
   .hero__hud { padding-inline: 18px; font-size: 0.66rem; }
   .about__stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .stat { padding: 15px 16px; }
