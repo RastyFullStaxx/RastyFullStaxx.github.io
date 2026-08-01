@@ -1,7 +1,7 @@
 /* ============================================================
    RASTY C. ESPARTERO — portfolio
    Palette: abyss navy. Brand anchor #062045.
-   Display: Clash Display · Body: Satoshi · Utility: JetBrains Mono
+   Display: Archivo Expanded · Utility: Martian Mono · Body: Satoshi
    ============================================================ */
 
 :root {
@@ -19,9 +19,13 @@
   --glass: rgba(6, 32, 69, 0.42);
   --glass-2: rgba(6, 32, 69, 0.72);
   --grad: linear-gradient(92deg, #7fdbff, #4fc3f7 38%, #2e7cf6);
-  --font-display: "Clash Display", "Satoshi", system-ui, sans-serif;
+  /* Both faces carry a width axis, which is what pairs them: the display runs
+     expanded and the utility face condensed. Headlines are NOT monospaced —
+     a fixed advance gives "Hi!" a full cell for the i and the !, which reads
+     as ASCII art rather than a greeting. */
+  --font-display: "Archivo", "Satoshi", system-ui, sans-serif;
   --font-body: "Satoshi", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  --font-mono: "Martian Mono", ui-monospace, "Cascadia Code", monospace;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
   --nav-h: 64px;
@@ -35,11 +39,17 @@
   --r-lg: 10px;
 }
 
-/* If you own the Vermica license, drop the file next to this css and
-   un-comment — every display heading picks it up via --font-display.
-@font-face { font-family: "Vermica"; src: url("vermica.woff2") format("woff2"); font-display: swap; }
-:root { --font-display: "Vermica", "Clash Display", sans-serif; }
-*/
+/* The width axis is what separates the two roles. Labels, data and timestamps
+   run condensed Martian Mono; headings run expanded Archivo. Satoshi has no
+   width axis, so it ignores the inherited value and body copy is unaffected. */
+body { font-stretch: 75%; }
+.nav__logo,
+.menu a,
+.hero__title,
+.section__title,
+.card__title,
+.tl-item__role,
+.detail__title { font-stretch: 125%; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -222,7 +232,7 @@ kbd {
   justify-content: space-between;
   gap: 18px;
 }
-.nav__logo { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; }
+.nav__logo { font-family: var(--font-display); font-weight: 800; font-size: 1.28rem; letter-spacing: -0.02em; }
 .nav__logo-dot { color: var(--cyan); }
 
 .nav__links { display: flex; gap: 2px; }
@@ -294,8 +304,9 @@ kbd {
 .menu a {
   padding: 15px 48px;
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   border-radius: var(--r-md);
   transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
@@ -397,11 +408,12 @@ kbd {
 }
 .hero__title {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 8.4vw, 6.4rem);
-  line-height: 1.04;
-  letter-spacing: -0.015em;
-  word-spacing: 0.14em;
+  font-weight: 800;
+  /* Scaled down from the proportional face it replaced: a monospace advance
+     is ~35% wider per character, so the old clamp overflowed on phones. */
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
   text-wrap: balance;
 }
 
@@ -540,14 +552,13 @@ kbd {
 }
 .section__title {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2rem, 4.4vw, 3.2rem);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  word-spacing: 0.14em;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.9vw, 2.85rem);
+  line-height: 1.12;
+  letter-spacing: -0.018em;
   margin-bottom: 18px;
 }
-.section__title--xl { font-size: clamp(2.6rem, 6.4vw, 4.6rem); line-height: 1.05; }
+.section__title--xl { font-size: clamp(2.2rem, 5.6vw, 4.1rem); line-height: 1.06; }
 .section__sub { color: var(--muted); max-width: 42rem; margin-bottom: 36px; }
 
 /* the scramble engine wraps each glyph, grouped per word so lines
@@ -920,7 +931,7 @@ kbd {
 }
 
 .card__body { position: relative; z-index: 1; padding: 20px 22px 22px; display: grid; gap: 9px; align-content: start; }
-.card__title { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
+.card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: -0.015em; line-height: 1.3; }
 .card__desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
 
 /* the role answers "what were you on this?" before the reader opens anything */
@@ -978,7 +989,7 @@ kbd {
 .card--featured { grid-column: span 2; flex-direction: row; }
 .card--featured .card__thumb { flex: 0 0 44%; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
 .card--featured .card__body { flex: 1; padding: 26px 28px; gap: 11px; justify-content: center; }
-.card--featured .card__title { font-size: 1.45rem; }
+.card--featured .card__title { font-size: 1.35rem; }
 .card--featured .card__desc { font-size: 0.97rem; }
 .card--featured .card__abbr { font-size: clamp(3.4rem, 6vw, 5rem); }
 .card--featured .card__index { font-size: 0.78rem; letter-spacing: 0.2em; }
@@ -1185,7 +1196,7 @@ kbd {
   color: var(--sky);
   letter-spacing: 0.08em;
 }
-.tl-item__role { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin-top: 5px; }
+.tl-item__role { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: -0.015em; line-height: 1.3; margin-top: 5px; }
 .tl-item__org { color: var(--muted); font-size: 0.92rem; }
 .tl-item__org a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .tl-item__org a:hover { color: var(--ice); border-bottom-color: var(--cyan); }
@@ -1313,7 +1324,7 @@ kbd {
   color: var(--sky);
   letter-spacing: 0.12em;
 }
-.detail__title { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.15; }
+.detail__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.35rem, 2.7vw, 1.9rem); letter-spacing: -0.015em; line-height: 1.22; }
 .detail__role { color: var(--muted); font-size: 0.95rem; }
 
 .detail__body { padding: 20px 30px 26px; display: grid; gap: 22px; }
@@ -1609,7 +1620,7 @@ kbd {
 @media (max-width: 720px) {
   .gallery { grid-template-columns: 1fr; }
   .card--featured { grid-column: span 1; }
-  .card--featured .card__title { font-size: 1.2rem; }
+  .card--featured .card__title { font-size: 1.12rem; }
   .gh { padding: 20px 16px 16px; }
   .gh__foot { font-size: 0.66rem; }
   /* eight chips wrap to four rows on a phone — swipe one row instead */
