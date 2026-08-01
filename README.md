@@ -1,25 +1,13 @@
 # Portfolio — Rasty C. Espartero
 
-Personal portfolio for **Rasty C. Espartero**, full-stack developer (Taguig, Philippines).
+Personal portfolio of mine 
+
 Built as a single static page with no dependencies, no build step and no framework —
 three files and an assets folder.
 
 [GitHub](https://github.com/RastyFullStaxx) · [LinkedIn](https://www.linkedin.com/in/rastyespartero/)
 
 ---
-
-## Running it
-
-It's a static site. Any of these work:
-
-```bash
-python -m http.server 8000
-```
-
-Then open <http://localhost:8000>. Under XAMPP, drop the folder in `htdocs`
-and visit `http://localhost/portfolio/`. Opening `index.html` directly from
-the filesystem also works, though the clipboard copy falls back to a legacy
-path because `navigator.clipboard` needs a secure context.
 
 ## Files
 
@@ -65,16 +53,6 @@ close on `Escape`; the particle field has a manual pause control.
 
 Layout is designed under Jakob's, Fitts's, Miller's, Hick's, Proximity and
 Tesler's laws — see the comments in `index.html`.
-
-## Deploying
-
-Static hosting works anywhere. For **GitHub Pages**: Settings → Pages → deploy
-from `main` / root. All paths are relative, so it works from a subpath such as
-`rastyfullstaxx.github.io/portfolio/`.
-
-Before sharing the link widely, set an absolute URL on the `og:image` and add
-an `og:url` in `index.html` — link previews on Facebook, LinkedIn and X ignore
-relative image paths.
 
 ---
 
