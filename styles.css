@@ -857,7 +857,12 @@ kbd {
   -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
   cursor: pointer;
-  transform-style: preserve-3d;
+  /* No transform-style: preserve-3d here. The hover tilt rotates the card
+     itself against .gallery's perspective, so nothing inside the card needs
+     its own 3D space and the property bought us nothing. It cost something
+     though: the spec flattens the *used* value when overflow is not visible,
+     browsers implement that inconsistently, and a 3D context wrapped around a
+     backdrop-filtered clipped box is where WebKit collapses the card body. */
   transition: transform 0.45s var(--ease-out), border-color 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
   will-change: transform;
 }
@@ -988,7 +993,9 @@ kbd {
 /* featured hero tile — widest project leads the grid */
 .card--featured { grid-column: span 2; flex-direction: row; }
 .card--featured .card__thumb { flex: 0 0 44%; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
-.card--featured .card__body { flex: 1; padding: 26px 28px; gap: 11px; justify-content: center; }
+/* min-width: 0 — a grid container as a `flex: 1` item keeps its auto minimum
+   in Safari and refuses to shrink, pushing the text into a one-glyph column. */
+.card--featured .card__body { flex: 1; min-width: 0; padding: 26px 28px; gap: 11px; justify-content: center; }
 .card--featured .card__title { font-size: 1.35rem; }
 .card--featured .card__desc { font-size: 0.97rem; }
 .card--featured .card__abbr { font-size: clamp(3.4rem, 6vw, 5rem); }
