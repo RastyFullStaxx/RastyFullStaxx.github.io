@@ -40,6 +40,7 @@
         "First author on the resulting undergraduate thesis at the Polytechnic University of the Philippines — Manila.",
       ],
       tech: ["PyTorch", "LayoutLMv3", "Graph Neural Networks", "T5", "FastAPI", "HuggingFace", "PDF.js"], link: "https://github.com/RastyFullStaxx/IntelliForm",
+      logo: "assets/work/logos/intelliform.png",
     },
     {
       abbr: "BBS", title: "Balik-Bayan Scientist Program System",
@@ -114,6 +115,7 @@
         "TypeScript monorepo: React 19 and Tailwind v4 on Vite, Hono and Prisma on the server, and a pure-domain core package with no I/O.",
       ],
       tech: ["TypeScript", "React 19", "Anthropic SDK", "Hono", "Prisma", "Tailwind v4"], link: "https://github.com/RastyFullStaxx/fnb-lis",
+      logo: "assets/work/logos/fnb.png",
       photos: [
         { src: "assets/work/fnb/01-dashboard.jpg", cap: "Location dashboard" },
         { src: "assets/work/fnb/02-full-audit.jpg", cap: "Full audit with variance by category" },
@@ -132,6 +134,7 @@
         "Laravel 12 with React and Inertia.js on PostgreSQL.",
       ],
       tech: ["Laravel 12", "React", "Inertia.js", "PostgreSQL", "Laravel Reverb"], link: "",
+      logo: "assets/work/logos/amkor.png",
       photos: [
         { src: "assets/work/amkor/01-dashboard.jpg", cap: "Executive dashboard" },
         { src: "assets/work/amkor/02-reservations.jpg", cap: "Reservation and booking" },
@@ -150,6 +153,7 @@
         "Built for audit-grade traceability across multiple locations, where every manual adjustment carries accountability.",
       ],
       tech: ["TypeScript", "Node.js", "Event Sourcing", "SQLite"], link: "https://github.com/RastyFullStaxx/StockLedger",
+      logo: "assets/work/logos/stockledger.png",
       photos: [
         { src: "assets/work/stockledger/01-home.jpg", cap: "Live stock flow" },
         { src: "assets/work/stockledger/02-reports.jpg", cap: "Reports from the event replay" },
@@ -168,6 +172,7 @@
         "Mentored the student team through version control and delivery practice.",
       ],
       tech: ["Laravel 12", "PHP 8.2", "Blade", "Vite", "MySQL"], link: "https://github.com/RastyFullStaxx/ENC-BGC-One",
+      logo: "assets/work/logos/enc.png",
       photos: [
         { src: "assets/work/enc/01-services.jpg", cap: "Shared services hub" },
         { src: "assets/work/enc/02-calendar.jpg", cap: "Staff booking calendar" },
@@ -187,6 +192,7 @@
         "Session recovery so an interrupted booth session resumes instead of being lost.",
       ],
       tech: [".NET", "C#", "WebView2", "TypeScript"], link: "https://github.com/RastyFullStaxx/digiphoto-booth-system",
+      logo: "assets/work/logos/digiphoto.png",
       photos: [
         { src: "assets/work/digiphoto/01-kiosk.jpg", cap: "Guest kiosk" },
         { src: "assets/work/digiphoto/02-owner-portal.jpg", cap: "Owner operations portal" },
@@ -1265,14 +1271,19 @@
          </span>` : "";
     const metric = item.metric ? `<span class="card__metric">${esc(item.metric)}</span>` : "";
 
+    /* work cards sit on one white plate: the project's logo, or its abbreviation when it has none */
+    const mark = item.logo
+      ? `<img class="card__logo" src="${esc(item.logo)}" alt="" loading="lazy" decoding="async" />`
+      : `<span class="card__abbr">${esc(item.abbr)}</span>`;
+
     return `
       <button class="card${item.featured ? " card--featured" : ""}" type="button"
               data-cat="${esc(item.cat)}" data-i="${i}" data-kind="${kind}"
               aria-label="${esc(item.title)} — open details">
-        <span class="card__thumb">
+        <span class="card__thumb${kind === "work" ? " card__thumb--plate" : ""}">
           <span class="card__kind">${esc(item.cat)}</span>
           <span class="card__year">${esc(item.year)}</span>
-          <span class="card__abbr">${esc(item.abbr)}</span>
+          ${mark}
           ${kind === "work" ? `<span class="card__index">${String(i + 1).padStart(2, "0")}</span>` : ""}
         </span>
         <span class="card__body">
