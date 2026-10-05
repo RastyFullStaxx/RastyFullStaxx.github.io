@@ -1371,6 +1371,10 @@ kbd {
   transition: border-color 0.2s var(--ease-out), transform 0.25s var(--ease-out);
 }
 .detail__shot img { width: 100%; height: 100%; object-fit: cover; }
+/* UI screenshots are 16:10 desktop captures; crop from the top so headers stay visible */
+.detail__gallery--screens { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.detail__gallery--screens .detail__shot { aspect-ratio: 16 / 10; }
+.detail__gallery--screens .detail__shot img { object-position: top left; }
 .detail__shot:hover { border-color: var(--line-2); transform: translateY(-2px); }
 
 .detail__note {

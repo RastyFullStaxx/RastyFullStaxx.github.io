@@ -24,6 +24,7 @@
        featured  wide hero tile at the top of the grid
        ai        "model" (trained by me) or "agent" (LLM integration)
        metric    the one number or fact worth reading at a glance
+       photos    UI screenshots from assets/work/<project>/, shown in the case study
      ============================================================ */
   const PROJECTS = [
     {
@@ -82,6 +83,10 @@
         "Ships as a Tauri and Svelte desktop app, with a documented upgrade path to a MobileNetV3-Small backbone under temporal pooling.",
       ],
       tech: ["Python", "Grad-CAM", "Tauri", "Svelte", "TypeScript", "ffmpeg"], link: "https://github.com/RastyFullStaxx/AgilaEye",
+      photos: [
+        { src: "assets/work/agilaeye/01-scan.jpg", cap: "Scanning an AI-generated clip in the pilot feed" },
+        { src: "assets/work/agilaeye/02-explanation.jpg", cap: "The signals behind a verdict" },
+      ],
     },
     {
       abbr: "DSP", title: "Dataset Construction Pipeline — PH Government Forms",
@@ -109,6 +114,11 @@
         "TypeScript monorepo: React 19 and Tailwind v4 on Vite, Hono and Prisma on the server, and a pure-domain core package with no I/O.",
       ],
       tech: ["TypeScript", "React 19", "Anthropic SDK", "Hono", "Prisma", "Tailwind v4"], link: "https://github.com/RastyFullStaxx/fnb-lis",
+      photos: [
+        { src: "assets/work/fnb/01-dashboard.jpg", cap: "Location dashboard" },
+        { src: "assets/work/fnb/02-full-audit.jpg", cap: "Full audit with variance by category" },
+        { src: "assets/work/fnb/03-stocky.jpg", cap: "Stocky explaining a variance" },
+      ],
     },
     {
       abbr: "AMK", title: "Amkor IMS — Internal Management System",
@@ -122,6 +132,11 @@
         "Laravel 12 with React and Inertia.js on PostgreSQL.",
       ],
       tech: ["Laravel 12", "React", "Inertia.js", "PostgreSQL", "Laravel Reverb"], link: "",
+      photos: [
+        { src: "assets/work/amkor/01-dashboard.jpg", cap: "Executive dashboard" },
+        { src: "assets/work/amkor/02-reservations.jpg", cap: "Reservation and booking" },
+        { src: "assets/work/amkor/03-tour-packages.jpg", cap: "Tour packages" },
+      ],
     },
     {
       abbr: "SL", title: "StockLedger — Event-Sourced Inventory Ledger",
@@ -135,6 +150,11 @@
         "Built for audit-grade traceability across multiple locations, where every manual adjustment carries accountability.",
       ],
       tech: ["TypeScript", "Node.js", "Event Sourcing", "SQLite"], link: "https://github.com/RastyFullStaxx/StockLedger",
+      photos: [
+        { src: "assets/work/stockledger/01-home.jpg", cap: "Live stock flow" },
+        { src: "assets/work/stockledger/02-reports.jpg", cap: "Reports from the event replay" },
+        { src: "assets/work/stockledger/03-audit-trail.jpg", cap: "Audit trail of immutable events" },
+      ],
     },
     {
       abbr: "ENC", title: "ENC BGC One — Shared Services Portal",
@@ -148,6 +168,12 @@
         "Mentored the student team through version control and delivery practice.",
       ],
       tech: ["Laravel 12", "PHP 8.2", "Blade", "Vite", "MySQL"], link: "https://github.com/RastyFullStaxx/ENC-BGC-One",
+      photos: [
+        { src: "assets/work/enc/01-services.jpg", cap: "Shared services hub" },
+        { src: "assets/work/enc/02-calendar.jpg", cap: "Staff booking calendar" },
+        { src: "assets/work/enc/03-booking.jpg", cap: "Room booking wizard" },
+        { src: "assets/work/enc/04-admin.jpg", cap: "Admin operations overview" },
+      ],
     },
     {
       abbr: "DPB", title: "DigiPhoto — Event Booth Platform",
@@ -161,6 +187,11 @@
         "Session recovery so an interrupted booth session resumes instead of being lost.",
       ],
       tech: [".NET", "C#", "WebView2", "TypeScript"], link: "https://github.com/RastyFullStaxx/digiphoto-booth-system",
+      photos: [
+        { src: "assets/work/digiphoto/01-kiosk.jpg", cap: "Guest kiosk" },
+        { src: "assets/work/digiphoto/02-owner-portal.jpg", cap: "Owner operations portal" },
+        { src: "assets/work/digiphoto/03-template-editor.jpg", cap: "Print template editor" },
+      ],
     },
 
     /* ---- independent AI/ML builds: no framework, no tutorial scaffolding ---- */
@@ -1220,7 +1251,7 @@
   const AI_LABEL = { model: "Trained model", agent: "LLM agent" };
 
   function cardHTML(item, i, kind) {
-    const photoBadge = kind === "beyond" && item.photos.length
+    const photoBadge = item.photos?.length
       ? `<span class="card__photos">
            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
            ${item.photos.length}
@@ -1429,17 +1460,18 @@
   };
 
   function detailHTML(item, kind) {
-    const gallery = kind === "beyond"
-      ? (item.photos.length
-        ? `<section>
-             <h4 class="detail__sub">Photos</h4>
-             <div class="detail__gallery">${item.photos.map((p, i) => `
-               <button class="detail__shot" type="button" data-photo="${i}">
-                 <img src="${esc(p.src)}" alt="${esc(p.cap || item.title)}" loading="lazy" />
-               </button>`).join("")}</div>
-           </section>`
-        : `<p class="detail__note">No photos attached yet. Drop images into <b>assets/beyond/</b> and list them in this entry's <b>photos</b> array in app.js &mdash; they will appear here in a lightbox.</p>`)
-      : "";
+    const isWork = kind === "work";
+    const gallery = item.photos?.length
+      ? `<section>
+           <h4 class="detail__sub">${isWork ? "Screenshots" : "Photos"}</h4>
+           <div class="detail__gallery${isWork ? " detail__gallery--screens" : ""}">${item.photos.map((p, i) => `
+             <button class="detail__shot" type="button" data-photo="${i}">
+               <img src="${esc(p.src)}" alt="${esc(p.cap || item.title)}" loading="lazy" />
+             </button>`).join("")}</div>
+         </section>`
+      : kind === "beyond"
+        ? `<p class="detail__note">No photos attached yet. Drop images into <b>assets/beyond/</b> and list them in this entry's <b>photos</b> array in app.js &mdash; they will appear here in a lightbox.</p>`
+        : "";
 
     const tags = item.tech
       ? `<section>

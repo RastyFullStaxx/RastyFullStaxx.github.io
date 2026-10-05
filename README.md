@@ -16,7 +16,7 @@ three files and an assets folder.
 | `index.html` | Page structure and the overlay/dialog markup |
 | `styles.css` | All styling, tokens at the top, responsive and reduced-motion at the bottom |
 | `app.js` | Content data + every interaction |
-| `assets/` | Portrait, CV, and photos for the Beyond section |
+| `assets/` | Portrait, CV, project screenshots (`assets/work/`) and photos for the Beyond section |
 
 ## Editing content
 
