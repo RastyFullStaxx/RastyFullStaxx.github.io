@@ -41,6 +41,10 @@
       ],
       tech: ["PyTorch", "LayoutLMv3", "Graph Neural Networks", "T5", "FastAPI", "HuggingFace", "PDF.js"], link: "https://github.com/RastyFullStaxx/IntelliForm",
       logo: "assets/work/logos/intelliform.png",
+      photos: [
+        { src: "assets/work/intelliform/01-upload.jpg", cap: "Upload a PDF to start" },
+        { src: "assets/work/intelliform/02-research-dashboard.jpg", cap: "Researcher dashboard: precision, recall and F1 per run" },
+      ],
     },
     {
       abbr: "BBS", title: "Balik-Bayan Scientist Program System",
@@ -84,6 +88,7 @@
         "Ships as a Tauri and Svelte desktop app, with a documented upgrade path to a MobileNetV3-Small backbone under temporal pooling.",
       ],
       tech: ["Python", "Grad-CAM", "Tauri", "Svelte", "TypeScript", "ffmpeg"], link: "https://github.com/RastyFullStaxx/AgilaEye",
+      logo: "assets/work/logos/agilaeye.png",
       photos: [
         { src: "assets/work/agilaeye/01-scan.jpg", cap: "Scanning an AI-generated clip in the pilot feed" },
         { src: "assets/work/agilaeye/02-explanation.jpg", cap: "The signals behind a verdict" },
